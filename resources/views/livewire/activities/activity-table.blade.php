@@ -83,7 +83,7 @@
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-500">
                                             @if (in_array($activity->status,[3,4]) && $activity->file)
-                                            <a href="{{ $activity->file }}">
+                                            <a href="{{ $activity->file }}" download>
                                                 <x-button color="green" type="button" class="cursor-pointer">
                                                     <svg  xmlns="http://www.w3.org/2000/svg"  width="16"  height="16"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" /><path d="M7 11l5 5l5 -5" /><path d="M12 4l0 12" /></svg>
                                                 </x-button>

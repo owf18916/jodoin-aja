@@ -30,7 +30,7 @@ class PayableBatchDownloadDocument extends Component
 
         $this->activity = (new \App\Services\ActivityServices(
             jobName:'Payable Document Batch Download',
-            jobType: 2
+            jobType: 1
         ))->createActivity();
         
         $filePath = storage_path('app/imports/' . $uploadedFile);

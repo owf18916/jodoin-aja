@@ -5,7 +5,6 @@ namespace App\Jobs\Payables;
 use App\Imports\PayableDocumentBatchDownloadImport;
 use App\Services\PayableDocumentProviderServices;
 use Illuminate\Bus\Batchable;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
@@ -53,6 +52,7 @@ class PayableDocumentBatchDownloadJob implements ShouldQueue
                     $payableDocumentProviderServices = new PayableDocumentProviderServices($import->getValidRows(), $import->getPayables());
                     $payableDocumentProviderServices->createDocument();
 
+                    $this->activity->file = Storage::url("zip/{$payableDocumentProviderServices->getFileName()}.zip");
                     $this->activity->status = 3;
                 } catch (\Exception $e) {
                     $this->activity->status = 0;
@@ -64,7 +64,7 @@ class PayableDocumentBatchDownloadJob implements ShouldQueue
             }
 
         } catch (\Exception $e) {
-            Log::error('PayableImportJob failed during processing', [
+            Log::error('PayableDocumentBatchDownloadJob failed during processing', [
                 'filePath' => $this->filePath,
                 'activityId' => $this->activity->id,
                 'userId' => $this->userId,

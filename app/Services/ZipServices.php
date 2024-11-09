@@ -14,13 +14,15 @@ class ZipServices {
     {
         $zip = new ZipArchive;
 
-        $this->path = storage_path('app\\zip\\').$this->zipFileName.'.zip';
+        $this->path = storage_path('app/public/zip/'.$this->zipFileName.'.zip');
 
         try {
             if ($zip->open($this->path, ZipArchive::CREATE) === TRUE) {
     
                 foreach ($this->attachments as $attachment) {
-                    $zip->addFile($attachment['path'], basename($attachment['name']));
+                    if (file_exists($attachment['path'])) {
+                        $zip->addFile($attachment['path'], basename($attachment['name']));
+                    }
                 }
     
                 $zip->close();

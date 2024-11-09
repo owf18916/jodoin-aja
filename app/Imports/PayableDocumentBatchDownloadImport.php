@@ -108,16 +108,19 @@ class PayableDocumentBatchDownloadImport implements ToCollection, WithStartRow, 
     private function mapData($row)
     {
         $payable = $this->payables[$row];
-        $year = Carbon::parse($payable['payment_date'])->format('Y');
-        $month = Carbon::parse($payable['payment_date'])->format('m');
-        $cleanedInvoiceNumber = preg_replace('/[^A-Za-z0-9]/', '-', $row);
-        $pdfDirectory = storage_path('app/public/documents/payables/');
-        $pdfFilePath = $pdfDirectory . $year .'/'. $month .'/'. $cleanedInvoiceNumber . '.pdf';
 
-        $this->validRows[] = [
-            'path' => $pdfFilePath,
-            'name' => $cleanedInvoiceNumber.'.pdf',
-            'mime' => 'application/pdf',
-        ];
+        if ($payable['status'] == 2) {
+            $year = Carbon::parse($payable['payment_date'])->format('Y');
+            $month = Carbon::parse($payable['payment_date'])->format('m');
+            $cleanedInvoiceNumber = preg_replace('/[^A-Za-z0-9]/', '-', $row);
+            $pdfDirectory = storage_path('app/public/documents/payables/');
+            $pdfFilePath = $pdfDirectory . $year .'/'. $month .'/'. $cleanedInvoiceNumber . '.pdf';
+    
+            $this->validRows[] = [
+                'path' => $pdfFilePath,
+                'name' => $cleanedInvoiceNumber.'.pdf',
+                'mime' => 'application/pdf',
+            ];
+        }
     }
 }
