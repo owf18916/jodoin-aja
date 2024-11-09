@@ -43,7 +43,7 @@
                         <svg  xmlns="http://www.w3.org/2000/svg"  width="16"  height="16"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 20l-3 1v-8.5l-4.48 -4.928a2 2 0 0 1 -.52 -1.345v-2.227h16v2.172a2 2 0 0 1 -.586 1.414l-4.414 4.414v3" /><path d="M16 19h6" /><path d="M19 16v6" /></svg>
                     </button>
                     <button
-                        x-on:click="$dispatch('search-payable')"
+                        x-on:click="$dispatch('payable-batch-download-clicked')"
                         class="flex items-center h-10 rounded-md border border-slate-300 py-2 px-4 text-center text-sm transition-all shadow-sm hover:shadow-lg text-slate-600 hover:text-white hover:bg-slate-800 hover:border-slate-800 focus:text-white focus:bg-slate-800 focus:border-slate-800 active:border-slate-800 active:text-white active:bg-slate-800 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
                         type="button">
                         <svg  xmlns="http://www.w3.org/2000/svg"  width="16"  height="16"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-folder-search"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M11 19h-6a2 2 0 0 1 -2 -2v-11a2 2 0 0 1 2 -2h4l3 3h7a2 2 0 0 1 2 2v2.5" /><path d="M18 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /><path d="M20.2 20.2l1.8 1.8" /></svg>
@@ -52,6 +52,7 @@
                 </div>
             </div>
             <livewire:payables.payable-upload />
+            <livewire:payables.payable-batch-download-document />
         </div>
         <div class="p-0 overflow-scroll">
             <table class="w-full mt-4 text-left table-auto min-w-max">
@@ -186,7 +187,7 @@
                         </td>
                         <td class="p-4 border-b border-slate-200">
                             @if ($payable->status == 2)
-                                <x-icons type="pdf-alt" class="text-center" />
+                                <livewire:payables.payable-download-document :id="$payable->id" />
                             @else
                                 N/A
                             @endif

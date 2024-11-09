@@ -2,11 +2,18 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Facades\Log;
+
 class ValidationErrorService
 {
-    public $totalRecords, $chunkSize, $totalChunks, $filePath, $fileName;
+    public $totalRecords,$chunkSize, $totalChunks, $filePath, $fileName;
 
-    private $fields;
+    private $fields, $csvHeaders = [
+        'No',
+        'Row',
+        'Field',
+        'Error'
+    ];
 
     public function __construct(public $errors)
     {
@@ -25,17 +32,10 @@ class ValidationErrorService
         $this->fields = $fields;
     }
 
-    public function setCsvHeader($header = null): array
+    public function setCsvHeader($header = null): void
     {
         if (empty($header)) {
-            return [
-                'No',
-                'Row',
-                'Field',
-                'Error'
-            ];
-        } else {
-            return $header;
+            $this->csvHeaders = $header;
         }
     }
 
@@ -83,7 +83,7 @@ class ValidationErrorService
         $file = fopen($this->filePath, 'w');
 
         // Menulis header CSV
-        fputcsv($file, $this->setCsvHeader());
+        fputcsv($file, $this->csvHeaders);
 
         $nomor = 1;  // Untuk kolom Nomor
         // Iterasi hasil dari processInChunks

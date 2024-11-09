@@ -32,7 +32,7 @@ class Activity extends Model
             1 => 'Sedang Diproses',
             2 => 'Proses Valiadasi',
             3 => 'Selesai',
-            4 => 'Selesai Dengan Error'
+            4 => 'Selesai Dengan Warning'
         ];
 
         return array_key_exists($this->status, $statusLabels) ? $statusLabels[$this->status] : 'Tidak Diketahui';

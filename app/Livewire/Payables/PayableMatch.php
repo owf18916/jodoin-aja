@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Livewire\Component;
 use App\Traits\Swalable;
 use Illuminate\Support\Facades\Bus;
+use Livewire\Attributes\On;
 
 class PayableMatch extends Component
 {
@@ -13,6 +14,7 @@ class PayableMatch extends Component
 
     public $activity;
 
+    #[On('match-payable-executed')]
     public function matchPayables()
     {
         $this->flashSuccess('Data sedang diproses, silahkan cek halaman Process Report.');

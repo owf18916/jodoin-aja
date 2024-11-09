@@ -13,7 +13,7 @@ class CustomerSeeder extends Seeder
      */
     public function run(): void
     {
-        $csv = fopen(base_path('database/data/customer.csv'),"r");
+        $csv = fopen(base_path('database/data/customers.csv'),"r");
         $firstline = true;
         while (($data = fgetcsv($csv, 2000, ",")) !== FALSE) {
             if (!$firstline) {

@@ -25,10 +25,9 @@ class PayableMatchingServices {
             $pdfFilePath = $pdfDirectory . $year .'/'. $month .'/'. $cleanedInvoiceNumber . '.pdf';
 
             if (File::exists($pdfFilePath)) {
-                $this->matchedPayables[] = [
-                    'id' => $payable->id,
-                    'status' => File::exists($pdfFilePath) ? 2 : 1
-                ];
+                $payable->status = 2;
+
+                $this->matchedPayables[] = $payable->toArray();
             } else {
                 $this->unmatchedPayables[] =  [
                     "row" => $payable->id,
