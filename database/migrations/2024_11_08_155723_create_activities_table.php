@@ -23,6 +23,7 @@ return new class extends Migration
                 ->onDelete('cascade');
             $table->string('job_name', 50);
             $table->string('file', 50)->nullable();
+            $table->string('message', 255)->nullable();
             $table->smallInteger('total_chunk')->nullable();
             $table->tinyInteger('status')->default(1);
             $table->timestamp('started_at');

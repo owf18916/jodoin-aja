@@ -15,6 +15,7 @@ class PermissionSeeder extends Seeder
         $permissions = collect([
             'manage-payable',
             'manage-receivable',
+            'manage-currency',
             'manage-customer',
             'manage-supplier',
             'manage-bank',

@@ -7,6 +7,7 @@ use Livewire\Component;
 use App\Traits\Swalable;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 
 class PayableBatchDownloadDocument extends Component
@@ -24,6 +25,13 @@ class PayableBatchDownloadDocument extends Component
 
         if(!$uploadedFile) {
             return $this->flashError($this->form->errorMessage);
+        }
+
+        Log::info('total rows:', [$this->form->getTotalRows()]);
+
+        if($this->form->getTotalRows() > 101) {
+            $this->flashError('Maksimal data yang bisa dicari adalah 100 invoice number');
+            return;
         }
 
         $this->flashSuccess('Data sedang diproses, silahkan cek halaman Process Report.');

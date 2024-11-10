@@ -17,5 +17,12 @@ Route::middleware('auth')->group(function () {
         });
     });
 
+    Route::prefix('master')->group(function () {
+        Route::get('/suppliers', \App\Livewire\Suppliers\SupplierIndex::class)->name('supplier.index');
+        Route::get('/customers', \App\Livewire\Customers\CustomerIndex::class)->name('customer.index');
+        Route::get('/banks', \App\Livewire\Banks\BankIndex::class)->name('bank.index');
+        Route::get('/currencies', \App\Livewire\Currencies\CurrencyIndex::class)->name('currency.index');
+    });
+
     Route::get('/user', \App\Livewire\User\UserIndex::class)->name('user');
 });

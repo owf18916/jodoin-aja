@@ -1,0 +1,33 @@
+<x-custom-modal maxWidth="2xl" modal="{{ $modal }}" submit="save">
+    <x-slot name="title">
+        <div class="flex flex-col">
+            <span>
+                Create Bank
+            </span>
+            <p class="text-xs">
+                (*) <span class="text-red-500">Wajib diisi</span>
+            </p>
+        </div>
+    </x-slot>
+
+    <x-slot name="content">
+        <div class="grid grid-cols-12 gap-2">
+            <div class="col-span-4">
+                <x-label for="initial"  value="Inisial Bank(*)" />
+                <x-input wire:model="initial" id="initial" type="text" class="mt-1 w-full"/>
+                <x-input-error for="initial" class="mt-1" />
+            </div>
+            <div class="col-span-8">
+                <x-label for="name"  value="Nama Bank(*)" />
+                <x-input wire:model="name" id="name" type="text" class="mt-1 w-full"/>
+                <x-input-error for="name" class="mt-1" />
+            </div>
+        </div>
+    </x-slot>
+
+    <x-slot name="footer">
+        <x-secondary-button class="me-3" x-on:click="$dispatch('{{ $modal }}', { open: false })">Cancel</x-secondary-button>
+        <x-button>Save</x-button>
+    </x-slot>
+
+</x-custom-modal>

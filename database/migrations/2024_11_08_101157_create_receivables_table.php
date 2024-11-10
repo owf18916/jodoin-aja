@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('customer_id')->index('idx_receivables_customer_id');
             $table->string('invoice_number', 121);
             $table->string('bl_number', 121);
+            $table->date('bl_date');
             $table->date('invoice_date');
             $table->date('receipt_date');
             $table->tinyInteger('status')->default(1)->index('idx_receivables_status');

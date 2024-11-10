@@ -41,4 +41,9 @@ class UploadForm extends Form
 
         return $fileName;
     }
+
+    public function getTotalRows()
+    {
+        return $this->sheet->getHighestRow();
+    }
 }

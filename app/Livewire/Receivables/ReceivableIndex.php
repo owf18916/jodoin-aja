@@ -7,7 +7,7 @@ use Livewire\Component;
 
 class ReceivableIndex extends Component
 {
-    #[Title('Payable Document')]
+    #[Title('Receivable Document')]
     public function render()
     {
         return view('livewire.receivables.receivable-index');

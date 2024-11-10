@@ -42,16 +42,16 @@
                                             Master
                                         </div>
                     
-                                        <x-dropdown-link href="" wire:navigate>
+                                        <x-dropdown-link href="{{ route('currency.index') }}" wire:navigate>
                                             Master Currency
                                         </x-dropdown-link>
-                                        <x-dropdown-link href="" wire:navigate>
+                                        <x-dropdown-link href="{{ route('bank.index') }}" wire:navigate>
                                             Master Bank
                                         </x-dropdown-link>
-                                        <x-dropdown-link href="" wire:navigate>
+                                        <x-dropdown-link href="{{ route('supplier.index') }}" wire:navigate>
                                             Master Supplier
                                         </x-dropdown-link>
-                                        <x-dropdown-link href="" wire:navigate>
+                                        <x-dropdown-link href="{{ route('customer.index') }}" wire:navigate>
                                             Master Customer
                                         </x-dropdown-link>
                                     </div>
