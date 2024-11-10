@@ -1,5 +1,5 @@
 <div>
-    <x-button type="button" color="red" wire:click="download">
+    <x-plain-button type="button" color="red" wire:click="download">
         <x-icons type="pdf-alt" class="text-center" />
-    </x-button>
+    </x-plain-button>
 </div>

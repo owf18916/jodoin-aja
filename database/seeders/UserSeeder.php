@@ -17,7 +17,8 @@ class UserSeeder extends Seeder
             'initial' => 'ADM',
             'email' => 'jodoin@sami.co.id',
             'email_verified_at' => \Carbon\Carbon::now(),
-            'password' => \Illuminate\Support\Facades\Hash::make('Jodoin@2024')
+            'password' => \Illuminate\Support\Facades\Hash::make('Jodoin@2024'),
+            'status' => 1
         ]);
 
         $admin->syncRoles(['Administrator']);

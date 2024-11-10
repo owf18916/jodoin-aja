@@ -33,7 +33,7 @@ class PayableMatchingJob implements ShouldQueue
         if ($unmatchedPayables = $this->matchingPayableServices->getUnmatchedPayables()) {
             $this->handleUnmatchedPayables($unmatchedPayables);
         } else {
-            $this->updatePayableStatus(3);
+            $this->updatePayableStatus(3, 2);
         }
         $this->activity->finished_at = now();
         $this->activity->save();
@@ -47,7 +47,7 @@ class PayableMatchingJob implements ShouldQueue
         $validationErrorService = $this->createValidationErrorService($unmatchedPayables);
         $validationErrorService->writeToCsv($this->activity->id);
 
-        $this->updatePayableStatus(4, $validationErrorService->fileName);
+        $this->updatePayableStatus(4, 1, $validationErrorService->fileName);
     }
 
     /**
@@ -65,14 +65,14 @@ class PayableMatchingJob implements ShouldQueue
     /**
      * Update payable status in the database and handle exceptions.
      */
-    protected function updatePayableStatus(int $status, string $fileName = null): void
+    protected function updatePayableStatus(int $activityStatus, int $payableStatus , string $fileName = null): void
     {
         try {
             DB::table('payables')
                 ->whereIn('id',array_column($this->matchingPayableServices->getMatchedPayables(),'id'))
-                ->update(['status' => $status]);
+                ->update(['status' => $payableStatus]);
 
-            $this->activity->status = $status;
+            $this->activity->status = $activityStatus;
             if ($fileName) {
                 $this->activity->file = Storage::url("exports/{$fileName}");
             }

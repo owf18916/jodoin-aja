@@ -3,6 +3,7 @@
 namespace App\Livewire\User;
 
 use App\Models\User;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -20,6 +21,7 @@ class UserTable extends Component
             1 => 'success'
         ];
 
+    #[On('user-updated')]
     public function render()
     {
         return view('livewire.user.user-table', [

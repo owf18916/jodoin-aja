@@ -189,7 +189,7 @@
                             @if ($payable->status == 2)
                                 <livewire:payables.payable-download-document :id="$payable->id" />
                             @else
-                                N/A
+                                <x-badge>N/A</x-badge>
                             @endif
                         </td>
                         <td class="p-4 border-b border-slate-200">

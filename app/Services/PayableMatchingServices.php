@@ -33,7 +33,7 @@ class PayableMatchingServices {
                     "row" => $payable->id,
                     "errors" => [
                       0 => [
-                        0 => "Dokumen tidak ditemukan"
+                        0 => 'Dokumen untuk invoice : '. $payable->invoice_number .' tidak ditemukan'
                       ]
                     ]
                 ];
