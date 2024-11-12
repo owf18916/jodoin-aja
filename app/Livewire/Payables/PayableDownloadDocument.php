@@ -5,6 +5,7 @@ namespace App\Livewire\Payables;
 use App\Models\Payable;
 use App\Traits\Swalable;
 use Carbon\Carbon;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class PayableDownloadDocument extends Component
@@ -18,9 +19,10 @@ class PayableDownloadDocument extends Component
         
     }
 
-    public function download()
+    #[On('download-payable-pdf-clicked')]
+    public function download(Payable $payable)
     {
-        $payable = Payable::find($this->id);
+        // $payable = Payable::find($this->id);
         $year = Carbon::parse($payable->payment_date)->format('Y');
         $month = Carbon::parse($payable->payment_date)->format('m');
         $cleanedInvoiceNumber = preg_replace('/[^A-Za-z0-9]/', '-', $payable->invoice_number);

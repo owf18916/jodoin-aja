@@ -144,7 +144,7 @@
                 </thead>
                 <tbody>
 					@forelse ($payables as $payable)						
-                    <tr>
+                    <tr wire:key="{{ $payable->id }}">
                         <td class="p-4 border-b border-slate-200">
                             {{ (($payables->currentPage() - 1) * $payables->perPage()) + $loop->iteration }}
                         </td>
@@ -187,7 +187,15 @@
                         </td>
                         <td class="p-4 border-b border-slate-200">
                             @if ($payable->status == 2)
-                                <livewire:payables.payable-download-document :id="$payable->id" />
+                                {{-- <livewire:payables.payable-download-document :id="$payable->id" /> --}}
+                                {{-- <livewire:payables.payable-download-document /> --}}
+                                <x-plain-button
+                                    download
+                                    type="button"
+                                    color="red"
+                                    x-on:click="$dispatch('download-payable-pdf-clicked', { payable: {{ $payable->id }}})">
+                                    <x-icons type="pdf-alt" class="text-center" />
+                                </x-plain-button>
                             @else
                                 <x-badge>N/A</x-badge>
                             @endif

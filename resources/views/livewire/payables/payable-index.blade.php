@@ -10,4 +10,5 @@
     <livewire:payables.payable-create />
     <livewire:payables.payable-edit />
     <livewire:payables.payable-delete />
+    <livewire:payables.payable-download-document />
 </div>
