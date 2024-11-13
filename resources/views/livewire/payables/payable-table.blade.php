@@ -66,15 +66,6 @@
                             </p>
                         </th>
                         <th
-							x-on:click="$wire.sortField('bank_id')"
-                            class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
-                            <p
-                                class="flex items-center justify-between gap-2 font-sans text-sm font-normal leading-none text-slate-500">
-                                Bank
-                                <x-sort :$sortDirection :$sortBy field="bank_id" />
-                            </p>
-                        </th>
-                        <th
 							x-on:click="$wire.sortField('supplier_id')"
                             class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
                             <p
@@ -97,16 +88,7 @@
                             class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
                             <p
                                 class="flex items-center justify-between gap-2 font-sans text-sm font-normal leading-none text-slate-500">
-                                Tanggal Invoice
-                                <x-sort :$sortDirection :$sortBy field="invoice_date" />
-                            </p>
-                        </th>
-                        <th
-							x-on:click="$wire.sortField('invoice_date')"
-                            class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
-                            <p
-                                class="flex items-center justify-between gap-2 font-sans text-sm font-normal leading-none text-slate-500">
-                                Tanggal Payment
+                                Tanggal Catat
                                 <x-sort :$sortDirection :$sortBy field="invoice_date" />
                             </p>
                         </th>
@@ -150,11 +132,6 @@
                         </td>
                         <td class="p-4 border-b border-slate-200">
 							<p class="text-sm text-slate-500">
-								{{ $payable->bank->initial }}
-                            </p>
-                        </td>
-                        <td class="p-4 border-b border-slate-200">
-							<p class="text-sm text-slate-500">
 								{{ $payable->supplier->name }}
                             </p>
                         </td>
@@ -165,12 +142,7 @@
                         </td>
                         <td class="p-4 border-b border-slate-200">
 							<p class="text-sm text-slate-500">
-								{{ $payable->invoice_date }}
-                            </p>
-                        </td>
-                        <td class="p-4 border-b border-slate-200">
-							<p class="text-sm text-slate-500">
-								{{ $payable->payment_date }}
+								{{ $payable->accounted_date }}
                             </p>
                         </td>
                         <td class="p-4 border-b border-slate-200">
@@ -187,8 +159,6 @@
                         </td>
                         <td class="p-4 border-b border-slate-200">
                             @if ($payable->status == 2)
-                                {{-- <livewire:payables.payable-download-document :id="$payable->id" /> --}}
-                                {{-- <livewire:payables.payable-download-document /> --}}
                                 <x-plain-button
                                     download
                                     type="button"

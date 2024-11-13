@@ -13,11 +13,9 @@ return new class extends Migration
     {
         Schema::create('payables', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('bank_id')->index('idx_payables_bank_id');
             $table->foreignId('supplier_id')->index('idx_payables_supplier_id');
             $table->string('invoice_number', 121);
-            $table->date('invoice_date');
-            $table->date('payment_date');
+            $table->date('accounted_date');
             $table->foreignId('currency_id')->index('idx_payables_currency_id');
             $table->decimal('amount', 12, 2);
             $table->tinyInteger('status')->default(1)->index('idx_payables_status');

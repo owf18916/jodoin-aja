@@ -13,22 +13,22 @@ class MasterValidationServices
     
     public function __construct(public array $masterExceptions = []){
 
-        if (!in_array('banks', $this->masterExceptions)) {
-            $banks = Bank::select('id', 'name')->get();
-            foreach ($banks as $bank) {
-                $this->banks[$bank->name] = [
-                    'id' => $bank->id,
-                    'name' => $bank->name,
-                ];
-            };
-        }
+        // if (!in_array('banks', $this->masterExceptions)) {
+        //     $banks = Bank::select('id', 'name')->get();
+        //     foreach ($banks as $bank) {
+        //         $this->banks[$bank->name] = [
+        //             'id' => $bank->id,
+        //             'name' => $bank->name,
+        //         ];
+        //     };
+        // }
 
         if (!in_array('suppliers', $this->masterExceptions)) {
             $suppliers = Supplier::select('id', 'name')->where('status', 1)->get();
             foreach ($suppliers as $supplier) {
                 $this->suppliers[$supplier->name] = [
                     'id' => $supplier->id,
-                    'name' => $bank->name,
+                    'name' => $supplier->name,
                 ];
             };
         }
@@ -54,14 +54,14 @@ class MasterValidationServices
         }
     }
 
-    public function validateBank(): callable
-    {
-        return function ($attribute, $value, $fail) {
-            if (!isset($this->banks[$value])) {
-                $fail('Nama bank tidak valid.');
-            }
-        };
-    }
+    // public function validateBank(): callable
+    // {
+    //     return function ($attribute, $value, $fail) {
+    //         if (!isset($this->banks[$value])) {
+    //             $fail('Nama bank tidak valid.');
+    //         }
+    //     };
+    // }
 
     public function validateSupplier(): callable
     {

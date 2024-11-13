@@ -70,54 +70,15 @@
                 </x-tom>
                 <x-input-error for="form.supplier" class="mt-1" />
             </div>
-            <div class="col-span-6">
-                <x-label for="bank"  value="Filter Bank" />
-                <x-tom
-                    x-init="$el.bank = new Tom($el, {
-                        plugins: {
-                            clear_button:{
-                                title:'Hapus semua',
-                            },
-                            remove_button:{
-                                title:'Hapus item ini',
-                            }
-                        },
-                        sortField: {
-                            field: 'name',
-                            direction: 'asc'
-                        },
-                        valueField: 'id',
-                        labelField: 'name',
-                        searchField: 'name',
-                    })"
-                    @set-bank-options.window="$el.bank.addOptions(event.detail.data)"
-                    @set-reset.window="$el.bank.clear()"
-                    wire:model="form.bank"
-                    id="bank-filter"
-                    class="mt-1 w-full"
-                    multiple>
-                    <option></option>
-                </x-tom>
-                <x-input-error for="form.bank" class="mt-1" />
-            </div>
             <div class="col-span-6"></div>
-            <div class="col-span-6" x-data="{ invoiceStartDate: null, invoiceEndDate: null }">
-                <x-label for="start-date" value="Invoice Date" />
-                <x-input wire:model="form.invoiceStartDate" id="invoice-start-date" type="date" x-on:change="$wire.updateFilter()" x-model="invoiceStartDate" />
+            <div class="col-span-6" x-data="{ accountedStartDate: null, accountedEndDate: null }">
+                <x-label for="start-date" value="Accounting Date" />
+                <x-input wire:model="form.accountedStartDate" id="accounted-start-date" type="date" x-on:change="$wire.updateFilter()" x-model="accountedStartDate" />
     
                 <x-label for="end-date"  value="s/d" />
-                <x-input wire:model="form.invoiceEndDate" id="invoice-end-date" type="date" x-on:change="$wire.updateFilter()" x-model="invoiceEndDate" />
+                <x-input wire:model="form.accountedEndDate" id="accounted-end-date" type="date" x-on:change="$wire.updateFilter()" x-model="accountedEndDate" />
                 
-                <x-button type="button" x-on:click="invoiceStartDate = null;invoiceEndDate = null;$wire.resetInvoiceDate()" class="text-xs mt-2">clear</x-button>
-            </div>
-            <div class="col-span-6" x-data="{ paymentStartDate: null, paymentEndDate: null }">
-                <x-label for="start-date" value="Payment Date" />
-                <x-input wire:model="form.paymentStartDate" id="payment-start-date" type="date" x-on:change="$wire.updateFilter()" x-model="paymentStartDate" />
-    
-                <x-label for="end-date"  value="s/d" />
-                <x-input wire:model="form.paymentEndDate" id="payment-end-date" type="date" x-on:change="$wire.updateFilter()" x-model="paymentEndDate" />
-                
-                <x-button type="button" x-on:click="paymentStartDate = null;paymentEndDate = null;$wire.resetPaymentDate()" class="text-xs mt-2">clear</x-button>
+                <x-button type="button" x-on:click="accountedStartDate = null;accountedEndDate = null;$wire.resetAccountedDate()" class="text-xs mt-2">clear</x-button>
             </div>
         </div>
     </x-slot>

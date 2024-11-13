@@ -5,29 +5,31 @@ namespace App\Livewire\Forms;
 use Livewire\Form;
 use App\Models\Payable;
 use App\Services\PayableServices;
+use Carbon\Carbon;
 
 class PayableForm extends Form
 {
     public ?Payable $payable;
-    public $invoiceNumber, $bank, $supplier,$currency, $amount, $invoiceDate, $paymentDate;
+    public $invoiceNumber, $supplier,$currency, $amount, $accountedDate;
 
     public function rules(): array
     {
         return [
             'supplier' => ['required','exists:suppliers,id'],
             'currency' => ['required','exists:currencies,id'],
-            'bank' => ['required','exists:banks,id'],
             'supplier' => ['required','exists:suppliers,id'],
             'invoiceNumber' => ['required', function ($attribute, $value, $fail) {
-                $invoiceExists = Payable::where('suppier_id', $this->supplier)
+                $invoiceExists = Payable::where('supplier_id', $this->supplier)
                     ->where('invoice_number', $value)
                     ->count();
 
                 if (!empty($invoiceExists))
                     $fail('nomor invoice tidak valid');
             }],
-            'invoiceDate' => ['required','date'],
-            'paymentDate' => ['required','date'],
+            'accountedDate' => ['required','date', function ($attribute, $value, $fail) {
+                if (Carbon::parse($value) > Carbon::now())
+                    $fail('tanggal invoice tidak valid, saat ini masih tanggal '.Carbon::now()->format('d-M-Y'));
+            }],
             'amount' => ['required','numeric'],
         ];
     }
@@ -41,8 +43,7 @@ class PayableForm extends Form
             'bank' => $payable->bank_id,
             'supplier' => $payable->supplier_id,
             'invoiceNumber' => $payable->invoice_number,
-            'invoiceDate' => $payable->invoice_date,
-            'paymentDate' => $payable->payment_date,
+            'accountedDate' => $payable->accounted_date,
             'amount' => $payable->amount,
         ]);
     }
@@ -57,15 +58,11 @@ class PayableForm extends Form
         return (new PayableServices())->getCurrencyOptions();
     }
 
-    public function setBankOptions()
-    {
-        return (new PayableServices())->getBankOptions();
-    }
-
     public function store(): void
     {
         Payable::create(array_merge(
-            $this->getCommonPayableData()
+            $this->getCommonPayableData(),
+            ['created_by' => auth()->user()->id]
         ));
     }
 
@@ -80,11 +77,9 @@ class PayableForm extends Form
     {
         return [
             'currency_id' => $this->currency,
-            'bank_id' => $this->bank,
             'supplier_id' => $this->supplier,
             'invoice_number' => $this->invoiceNumber,
-            'invoice_date' => $this->invoiceDate,
-            'payment_date' => $this->paymentDate,
+            'accounted_date' => $this->accountedDate,
             'amount' => $this->amount
         ];
     }

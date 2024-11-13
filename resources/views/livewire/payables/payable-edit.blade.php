@@ -44,18 +44,11 @@
                 <x-input-error for="form.supplier" class="mt-1" />
             </div>
             <div class="col-span-6">
-                <x-label for="bank"  value="Bank (*)" />
-                <x-select
-                    wire:model="form.bank"
-                    id="bank"
-                    class="mt-1 w-full text-sm">
-                    <option></option>
-                    @foreach ($form->setBankOptions() as $bank)
-                        <option class="text-sm" value="{{ $bank->id }}" {{ $bank->id == $form->bank ? ' selected' : '' }}>{{ $bank->initial.' - '.$bank->name }}</option>
-                    @endforeach
-                </x-select>
-                <x-input-error for="form.bank" class="mt-1" />
+                <x-label for="form.invoiceNumber"  value="Invoice Number(*)" />
+                <x-input wire:model="form.invoiceNumber" id="form.invoiceNumber" type="text" class="mt-1 w-full"/>
+                <x-input-error for="form.invoiceNumber" class="mt-1" />
             </div>
+            <div class="col-span-6"></div>
             <div class="col-span-6">
                 <x-label for="currency"  value="Currency (*)" />
                 <x-select
@@ -70,24 +63,14 @@
                 <x-input-error for="form.currency" class="mt-1" />
             </div>
             <div class="col-span-6">
-                <x-label for="form.invoiceNumber"  value="Invoice Number(*)" />
-                <x-input wire:model="form.invoiceNumber" id="form.invoiceNumber" type="text" class="mt-1 w-full"/>
-                <x-input-error for="form.invoiceNumber" class="mt-1" />
-            </div>
-            <div class="col-span-6">
                 <x-label for="form.amount"  value="Amount(*)" />
                 <x-input wire:model.live="form.amount" id="form.amount" type="text" class="mt-1 w-full"/>
                 <x-input-error for="form.amount" class="mt-1" />
             </div>
             <div class="col-span-4">
-                <x-label for="form.invoiceDate"  value="Invoice Date(*)" />
-                <x-input wire:model="form.invoiceDate" id="form.invoiceDate" type="date" class="mt-1 w-full"/>
-                <x-input-error for="form.invoiceDate" class="mt-1" />
-            </div>
-            <div class="col-span-4">
-                <x-label for="form.paymentDate"  value="Payment Date(*)" />
-                <x-input wire:model="form.paymentDate" id="form.paymentDate" type="date" class="mt-1 w-full"/>
-                <x-input-error for="form.paymentDate" class="mt-1" />
+                <x-label for="form.accountedDate"  value="Accounting Date(*)" />
+                <x-input wire:model="form.accountedDate" id="form.accountedDate" type="date" class="mt-1 w-full"/>
+                <x-input-error for="form.accountedDate" class="mt-1" />
             </div>
         </div>
     </x-slot>

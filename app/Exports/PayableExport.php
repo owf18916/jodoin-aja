@@ -23,11 +23,11 @@ class PayableExport implements FromCollection, WithMapping, WithHeadings, WithTi
     {
         return [
             'No',
-            'Bank',
+            // 'Bank',
             'Supplier',
             'Nomor Invoice',
-            'Tanggal Invoice',
-            'Tanggal Payment',
+            'Tanggal Catat',
+            // 'Tanggal Payment',
             'Amount',
             'Ketersediaan Dokumen',
             'Status',
@@ -38,11 +38,12 @@ class PayableExport implements FromCollection, WithMapping, WithHeadings, WithTi
     {
         return [
             $this->currentRow++,
-            $row->bank->name,
+            // $row->bank->name,
             $row->supplier->name,
             $row->invoice_number,
-            $row->invoice_date,
-            $row->payment_date,
+            // $row->invoice_date,
+            // $row->payment_date,
+            $row->accounted_date,
             $row->amount,
             $row->status == 1 ? 'X' : 'O',
             $row->status_label
@@ -54,6 +55,6 @@ class PayableExport implements FromCollection, WithMapping, WithHeadings, WithTi
     */
     public function collection()
     {
-        return Payable::with(['currency', 'bank', 'supplier'])->filter($this->form)->get();
+        return Payable::with(['currency', 'supplier'])->filter($this->form)->get();
     }
 }

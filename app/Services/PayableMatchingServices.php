@@ -12,7 +12,7 @@ class PayableMatchingServices {
 
     public function matchPayables()
     {
-        $openPayables = Payable::select('id','invoice_number','payment_date')
+        $openPayables = Payable::select('id','invoice_number','accounted_date')
             ->where('status',1)
             ->get();
 
@@ -20,11 +20,16 @@ class PayableMatchingServices {
 
         foreach ($openPayables as $payable) {
             $cleanedInvoiceNumber = preg_replace('/[^A-Za-z0-9]/', '-', $payable->invoice_number);
-            $year = Carbon::parse($payable->payment_date)->format('Y');
-            $month = Carbon::parse($payable->payment_date)->format('m');
-            $pdfFilePath = $pdfDirectory . $year .'/'. $month .'/'. $cleanedInvoiceNumber . '.pdf';
+            $originalFile = $pdfDirectory.'copy-payables-here/'.$cleanedInvoiceNumber.'.pdf';
+            
+            if (File::exists($originalFile)) {
+                $year = Carbon::parse($payable->accounted_date)->format('Y');
+                $month = Carbon::parse($payable->accounted_date)->format('m');
+                
+                $destinationFile = $pdfDirectory . $year .'/'. $month .'/'. $cleanedInvoiceNumber . '.pdf';
 
-            if (File::exists($pdfFilePath)) {
+                File::move($originalFile, $destinationFile);
+                
                 $payable->status = 2;
 
                 $this->matchedPayables[] = $payable->toArray();

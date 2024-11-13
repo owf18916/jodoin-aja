@@ -12,7 +12,8 @@ class ValidationErrorService
         'No',
         'Row',
         'Field',
-        'Error'
+        'Error',
+        'Refference'
     ];
 
     public function __construct(public $errors)
@@ -94,7 +95,8 @@ class ValidationErrorService
                     $nomor,
                     $item['row'],
                     $item['field'],
-                    $item['error']
+                    $item['error'],
+                    $item['refference'] ?? null,
                 ]);
                 $nomor++;
             }

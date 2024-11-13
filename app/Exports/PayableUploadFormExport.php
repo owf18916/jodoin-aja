@@ -16,11 +16,12 @@ class PayableUploadFormExport implements WithHeadings, WithMultipleSheets, WithT
     public function headings(): array
     {
         return [
-            'Bank',
+            // 'Bank',
             'Supplier',
             'Invoice Number',
-            'Invoice Date',
-            'Payment Date',
+            'Accounting Date',
+            // 'Invoice Date',
+            // 'Payment Date',
             'Currency',
             'Amount'
         ];

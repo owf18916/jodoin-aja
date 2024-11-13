@@ -8,7 +8,7 @@ use Livewire\Form;
 
 class PayableFilterForm extends Form
 {
-    public $bank = [] ,$supplier = [], $invoiceStartDate, $invoiceEndDate, $paymentStartDate, $paymentEndDate, $status = [];
+    public $supplier = [], $accountedStartDate, $accountedEndDate, $status = [];
 
     public function setBankFilterOptions(): array
     {

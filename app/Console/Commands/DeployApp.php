@@ -34,7 +34,7 @@ class DeployApp extends Command
 
         // Jalankan db:seed
         $this->info('Running database seeder...');
-        Artisan::call('db:seed');
+        // Artisan::call('db:seed');
         $this->info(Artisan::output());
 
         // Buat folder jika belum ada
@@ -46,6 +46,7 @@ class DeployApp extends Command
             'storage/exports',
             'storage/app/imports',
         ];
+
         foreach ($folders as $folder) {
             if (!File::exists($folder)) {
                 File::makeDirectory($folder, 0755, true);
@@ -53,11 +54,53 @@ class DeployApp extends Command
             }
         }
 
+        $this->generateYearFolders('payables');
+        $this->generateYearFolders('receivables');
+
         // Buat symbolic link
         $this->info('Creating storage link...');
         Artisan::call('storage:link');
         $this->info(Artisan::output());
 
         $this->info('Deployment tasks completed successfully!');
+    }
+
+    private function generateYearFolders($subDir)
+    {
+        // Path utama tempat folder akan dibuat, misalnya di storage/app/directories
+        $baseDirectory = storage_path('app/public/documents/'.$subDir.'/');
+
+        // Rentang tahun dari 2024 hingga 2034
+        $startYear = 2024;
+        $endYear = 2034;
+
+        // Loop untuk setiap tahun
+        for ($year = $startYear; $year <= $endYear; $year++) {
+            // Path untuk folder tahun
+            $yearPath = $baseDirectory . DIRECTORY_SEPARATOR . $year;
+
+            // Membuat folder tahun jika belum ada
+            if (!File::exists($yearPath)) {
+                File::makeDirectory($yearPath, 0755, true);
+                $this->info("Created directory: $yearPath");
+            }
+
+            // Loop untuk setiap bulan dalam tahun tersebut (1 hingga 12)
+            for ($month = 1; $month <= 12; $month++) {
+                // Format bulan agar selalu dua digit (01, 02, ... 12)
+                $monthName = str_pad($month, 2, '0', STR_PAD_LEFT);
+                
+                // Path untuk folder bulan
+                $monthPath = $yearPath . DIRECTORY_SEPARATOR . $monthName;
+
+                // Membuat folder bulan jika belum ada
+                if (!File::exists($monthPath)) {
+                    File::makeDirectory($monthPath, 0755, true);
+                    $this->info("Created directory: $monthPath");
+                }
+            }
+        }
+
+        $this->info('Yearly'. $subDir .'directories with monthly subdirectories have been generated successfully.');
     }
 }
