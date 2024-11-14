@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class ReceivableAllMatchingJob implements ShouldQueue
+class ReceivableDataMatchingJob implements ShouldQueue
 {
     use Queueable, Batchable;
 
@@ -44,9 +44,14 @@ class ReceivableAllMatchingJob implements ShouldQueue
                ->where('status_bl', 2)
                ->update(['status' => 3]);
    
+            $this->activity->finished_at = now();
            $this->activity->status = 3;
+           $this->activity->save();
         } catch (\Exception $e) {
+            $this->activity->finished_at = now();
             $this->activity->status = 0;
+            $this->activity->save();
+
             Log::critical('Error inserting database:', [$e->getMessage()]);
         }
     }
@@ -56,7 +61,7 @@ class ReceivableAllMatchingJob implements ShouldQueue
      */
     public function failed(\Throwable $exception): void
     {
-        Log::critical('ReceivableAllMatchingJob permanently failed after max retries', [
+        Log::critical('ReceivableDataMatchingJob permanently failed after max retries', [
             'activityId' => $this->activity->id,
             'userId' => $this->userId,
             'error' => $exception->getMessage(),

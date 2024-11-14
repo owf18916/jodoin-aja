@@ -20,7 +20,7 @@ class ReceivableBatchDownloadDocument extends Component
 
     public function save()
     {
-        $this->form->fileName = 'import-batch-download-payable';
+        $this->form->fileName = 'import-batch-download-receivable';
         $uploadedFile = $this->form->upload();
 
         if(!$uploadedFile) {
@@ -37,16 +37,16 @@ class ReceivableBatchDownloadDocument extends Component
         $this->flashSuccess('Data sedang diproses, silahkan cek halaman Process Report.');
 
         $this->activity = (new \App\Services\ActivityServices(
-            jobName:'Payable Document Batch Download',
+            jobName:'Receivable Document Batch Download',
             jobType: 1
         ))->createActivity();
         
         $filePath = storage_path('app/imports/' . $uploadedFile);
 
         $batch = Bus::batch([
-            new \App\Jobs\Payables\PayableDocumentBatchDownloadJob($filePath, $this->activity, auth()->user()->id)
+            new \App\Jobs\Receivables\ReceivableDocumentBatchDownloadJob($filePath, $this->activity, auth()->user()->id)
         ])
-        ->name('document-payable-batch-download-'.auth()->user()->initial.Carbon::now()->format('Y-m-d H:i:s'))
+        ->name('document-receivable-batch-download-'.auth()->user()->initial.Carbon::now()->format('Y-m-d H:i:s'))
         ->dispatch();
 
         $this->activity->job_batches_id = $batch->id;
@@ -55,7 +55,7 @@ class ReceivableBatchDownloadDocument extends Component
 
     public function importForm()
     {
-        return Excel::download(new \App\Exports\PayableDocumentBatchDownloadFormExport, 'document-batch-download-form.xlsx');
+        return Excel::download(new \App\Exports\ReceivableDocumentBatchDownloadFormExport, 'document-batch-download-form.xlsx');
     }
 
     public function render()

@@ -25,7 +25,8 @@ class ReceivableTable extends Component
         $statusColors = [
             1 => 'danger',
             2 => 'warning',
-            3 => 'success',
+            3 => 'warning',
+            4 => 'success',
         ];
 
     #[On('receivable-refresh')]

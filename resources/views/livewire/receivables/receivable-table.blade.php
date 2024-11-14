@@ -34,6 +34,7 @@
                         <x-icons type="upload" />
                     </button>
                     <livewire:receivables.receivable-match />
+                    <livewire:receivables.receivable-match-data />
                     @endcan
 
                     <button
@@ -199,7 +200,13 @@
                         </td>
                         <td class="p-4 border-b border-slate-200">
                             @if ($receivable->status_invoice == 2)
-                                <livewire:receivables.receivable-download-document :id="$receivable->id" />
+                                <x-plain-button
+                                    download
+                                    type="button"
+                                    color="red"
+                                    x-on:click="$dispatch('download-receivable-pdf-clicked', { receivable: {{ $receivable->id }}})">
+                                    <x-icons type="pdf-alt" class="text-center" />
+                                </x-plain-button>
                             @else
                                 N/A
                             @endif
@@ -209,7 +216,13 @@
                                 -
                             @else
                                 @if ($receivable->status_bl == 2)
-                                    <livewire:receivables.receivable-download-document :id="$receivable->id" />
+                                <x-plain-button
+                                    download
+                                    type="button"
+                                    color="red"
+                                    x-on:click="$dispatch('download-receivable-bl-pdf-clicked', { receivable: {{ $receivable->id }}})">
+                                    <x-icons type="pdf-alt" class="text-center" />
+                                </x-plain-button>
                                 @else
                                     N/A
                                 @endif

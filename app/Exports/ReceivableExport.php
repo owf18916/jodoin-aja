@@ -23,26 +23,36 @@ class ReceivableExport implements FromCollection, WithMapping, WithHeadings, Wit
     {
         return [
             'No',
+            'Kategori AR',
             'Customer',
             'Nomor Invoice',
             'Nomor BL',
             'Tanggal Catat',
             'Amount',
-            'Ketersediaan Dokumen',
+            'Ketersediaan Dokumen Invoice',
+            'Ketersediaan Dokumen BL',
             'Status',
         ];
     }
 
     public function map($row): array
     {
+        if ($row->category == 2) {
+            $statusBl = '-';
+        } else {
+            $row->status_bl == 1 ? $statusBl = 'X' : $statusBl = 'O';
+        }
+
         return [
             $this->currentRow++,
+            $row->category_label,
             $row->customer->name,
             $row->invoice_number,
             $row->bl_number,
             $row->accounted_date,
             $row->amount,
-            $row->status == 1 ? 'X' : 'O',
+            $row->status_invoice == 1 ? 'X' : 'O',
+            $statusBl,
             $row->status_label
         ];
     }

@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Receivables;
 
-use App\Models\Payable;
+use App\Models\Receivable;
 use App\Traits\Swalable;
 use Carbon\Carbon;
 use Livewire\Attributes\On;
@@ -14,19 +14,13 @@ class ReceivableDownloadDocument extends Component
 
     use Swalable;
 
-    public function downloadBulk()
+    #[On('download-receivable-pdf-clicked')]
+    public function downloadInvoice(Receivable $receivable)
     {
-        
-    }
-
-    #[On('download-payable-pdf-clicked')]
-    public function download(Payable $payable)
-    {
-        // $payable = Payable::find($this->id);
-        $year = Carbon::parse($payable->payment_date)->format('Y');
-        $month = Carbon::parse($payable->payment_date)->format('m');
-        $cleanedInvoiceNumber = preg_replace('/[^A-Za-z0-9]/', '-', $payable->invoice_number);
-        $pdfDirectory = storage_path('app/public/documents/payables/');
+        $year = Carbon::parse($receivable->accounted_date)->format('Y');
+        $month = Carbon::parse($receivable->accounted_date)->format('m');
+        $cleanedInvoiceNumber = preg_replace('/[^A-Za-z0-9]/', '-', $receivable->invoice_number);
+        $pdfDirectory = storage_path('app/public/documents/receivables/');
         $pdfFilePath = $pdfDirectory . $year .'/'. $month .'/'. $cleanedInvoiceNumber . '.pdf';
 
         if (!file_exists($pdfFilePath)) {
@@ -38,6 +32,27 @@ class ReceivableDownloadDocument extends Component
         }, $cleanedInvoiceNumber . '.pdf', [
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'attachment; filename="' . $cleanedInvoiceNumber . '.pdf"',
+        ]);
+    }
+
+    #[On('download-receivable-bl-pdf-clicked')]
+    public function downloadBl(Receivable $receivable)
+    {
+        $year = Carbon::parse($receivable->accounted_date)->format('Y');
+        $month = Carbon::parse($receivable->accounted_date)->format('m');
+        $cleanedBlNumber = preg_replace('/[^A-Za-z0-9]/', '-', $receivable->bl_number);
+        $pdfDirectory = storage_path('app/public/documents/bl/');
+        $pdfFilePath = $pdfDirectory . $year .'/'. $month .'/'. $cleanedBlNumber . '.pdf';
+
+        if (!file_exists($pdfFilePath)) {
+            $this->flashError('Dokumen tidak ditemukan.');
+        }
+
+        return response()->streamDownload(function () use ($pdfFilePath) {
+            readfile($pdfFilePath);
+        }, $cleanedBlNumber . '.pdf', [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'attachment; filename="' . $cleanedBlNumber . '.pdf"',
         ]);
     }
 

@@ -21,60 +21,31 @@ class ReceivableMatch extends Component
     {
         $this->flashSuccess('Data sedang diproses, silahkan cek halaman Process Report.');
 
-        $this->matchInvoice();
-        $this->matchBl();
-        $this->matchReceivable();
-    }
-
-    private function matchInvoice()
-    {
+        // Inisiasi proses untuk setiap pekerjaan
         $this->matchInvoiceProcess = (new \App\Services\ActivityServices(
-            jobName:'Matching Receivable Invoice Documents',
+            jobName: 'Matching Receivable Invoice Documents',
             jobType: 3
         ))->createActivity();
 
-        $batch = Bus::batch([
-            new \App\Jobs\Receivables\ReceivableInvoiceMatchingJob($this->matchInvoiceProcess, auth()->user()->id)
-        ])
-        ->name('matching-document-receivable-invoice-'.auth()->user()->initial.Carbon::now()->format('Y-m-d H:i:s'))
-        ->dispatch();
-
-        $this->matchInvoiceProcess->job_batches_id = $batch->id;
-        $this->matchInvoiceProcess->save();
-    }
-
-    private function matchBl()
-    {
         $this->matchBlProcess = (new \App\Services\ActivityServices(
-            jobName:'Matching Receivable BL Documents',
+            jobName: 'Matching Receivable BL Documents',
             jobType: 3
         ))->createActivity();
 
+        // Buat batch dengan semua job
         $batch = Bus::batch([
+            new \App\Jobs\Receivables\ReceivableInvoiceMatchingJob($this->matchInvoiceProcess, auth()->user()->id),
             new \App\Jobs\Receivables\ReceivableBlMatchingJob($this->matchBlProcess, auth()->user()->id)
         ])
-        ->name('matching-document-receivable-bl-'.auth()->user()->initial.Carbon::now()->format('Y-m-d H:i:s'))
+        ->name('matching-document-receivable-' . auth()->user()->initial . Carbon::now()->format('Y-m-d H:i:s'))
         ->dispatch();
+
+        // Simpan id batch ke setiap proses untuk referensi
+        $this->matchInvoiceProcess->job_batches_id = $batch->id;
+        $this->matchInvoiceProcess->save();
 
         $this->matchBlProcess->job_batches_id = $batch->id;
         $this->matchBlProcess->save();
-    }
-
-    private function matchReceivable()
-    {
-        $this->matchAllProcess = (new \App\Services\ActivityServices(
-            jobName:'Matching All Receivable Documents',
-            jobType: 3
-        ))->createActivity();
-
-        $batch = Bus::batch([
-            new \App\Jobs\Receivables\ReceivableAllMatchingJob($this->matchAllProcess, auth()->user()->id)
-        ])
-        ->name('matching-document-receivable-all-'.auth()->user()->initial.Carbon::now()->format('Y-m-d H:i:s'))
-        ->dispatch();
-
-        $this->matchAllProcess->job_batches_id = $batch->id;
-        $this->matchAllProcess->save();
     }
 
     public function render()
