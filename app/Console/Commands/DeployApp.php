@@ -56,6 +56,7 @@ class DeployApp extends Command
 
         $this->generateYearFolders('payables');
         $this->generateYearFolders('receivables');
+        $this->generateYearFolders('bl');
 
         // Buat symbolic link
         $this->info('Creating storage link...');

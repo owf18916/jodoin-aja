@@ -17,14 +17,14 @@ class PayableForm extends Form
         return [
             'supplier' => ['required','exists:suppliers,id'],
             'currency' => ['required','exists:currencies,id'],
-            'supplier' => ['required','exists:suppliers,id'],
             'invoiceNumber' => ['required', function ($attribute, $value, $fail) {
                 $invoiceExists = Payable::where('supplier_id', $this->supplier)
                     ->where('invoice_number', $value)
                     ->count();
 
-                if (!empty($invoiceExists))
-                    $fail('nomor invoice tidak valid');
+                if ($invoiceExists && (empty($this->payable) || $this->payable->invoice_number !== $value)) {
+                    $fail('nomor invoice sudah ada');
+                }
             }],
             'accountedDate' => ['required','date', function ($attribute, $value, $fail) {
                 if (Carbon::parse($value) > Carbon::now())

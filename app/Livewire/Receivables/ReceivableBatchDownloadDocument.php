@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Payables;
+namespace App\Livewire\Receivables;
 
 use Carbon\Carbon;
 use Livewire\Component;
@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 
-class PayableBatchDownloadDocument extends Component
+class ReceivableBatchDownloadDocument extends Component
 {
     use Swalable;
     use WithFileUploads;
@@ -26,6 +26,8 @@ class PayableBatchDownloadDocument extends Component
         if(!$uploadedFile) {
             return $this->flashError($this->form->errorMessage);
         }
+
+        Log::info('total rows:', [$this->form->getTotalRows()]);
 
         if($this->form->getTotalRows() > 101) {
             $this->flashError('Maksimal data yang bisa dicari adalah 100 invoice number');
@@ -58,6 +60,6 @@ class PayableBatchDownloadDocument extends Component
 
     public function render()
     {
-        return view('livewire.payables.payable-batch-download-document');
+        return view('livewire.receivables.receivable-batch-download-document');
     }
 }

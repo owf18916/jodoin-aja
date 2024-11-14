@@ -2,11 +2,12 @@
 
 namespace App\Exports;
 
-use Maatwebsite\Excel\Concerns\WithTitle;
+use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
+use Maatwebsite\Excel\Concerns\WithTitle;
 
-class PayableUploadFormExport implements WithHeadings, WithMultipleSheets, WithTitle
+class ReceivableUploadFormExport implements WithHeadings, WithMultipleSheets, WithTitle
 {
     public function title(): string
     {
@@ -16,8 +17,10 @@ class PayableUploadFormExport implements WithHeadings, WithMultipleSheets, WithT
     public function headings(): array
     {
         return [
-            'Supplier',
+            'AR Category',
+            'Customer',
             'Invoice Number',
+            'BL Number',
             'Accounting Date',
             'Currency',
             'Amount'
@@ -28,7 +31,7 @@ class PayableUploadFormExport implements WithHeadings, WithMultipleSheets, WithT
     {
         $sheets = [];
 
-        $sheets[] = new \App\Exports\PayableUploadFormExport;
+        $sheets[] = new \App\Exports\ReceivableUploadFormExport;
         $sheets[] = new \App\Exports\MasterExport;
 
         return $sheets;

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Receivable extends Model
 {
-    protected $fillable = ['bank_id', 'customer_id', 'invoice_number', 'bl_number','invoice_date', 'bl_date', 'receipt_date', 'amount'];
+    protected $fillable = ['customer_id', 'category', 'invoice_number', 'bl_number','accounted_date', 'currency_id','amount', 'created_by'];
 
     public function currency(): BelongsTo
     {
@@ -19,21 +19,24 @@ class Receivable extends Model
         return $this->belongsTo(Customer::class);
     }
 
-    public function bank(): BelongsTo
-    {
-        return $this->belongsTo(Bank::class);
-    }
-
     protected function casts(): array
     {
         return [
+            'category' => 'string:category_label',
             'status' => 'string:status_label',
         ];
     }
 
     public static $statusLabels = [
         1 => 'Single',
-        2 => 'Berjodoh',
+        2 => 'Invoice Berjodoh',
+        3 => 'BL Berjodoh',
+        4 => 'Semua Berjodoh'
+    ];
+
+    public static $categoryLabels = [
+        1 => 'Sales AR',
+        2 => 'Other AR'
     ];
 
     public function getStatusLabelAttribute()
@@ -41,13 +44,15 @@ class Receivable extends Model
         return array_key_exists($this->status, self::$statusLabels) ? self::$statusLabels[$this->status] : 'Tidak Diketahui';
     }
 
+    public function getCategoryLabelAttribute()
+    {
+        return array_key_exists($this->category, self::$categoryLabels) ? self::$categoryLabels[$this->category] : 'Tidak Diketahui';
+    }
+
     public function scopeSearch($query, $value)
     {
         $query->where('invoice_number','like',"%{$value}%")
             ->orWhereHas('customer', function ($q) use($value) {
-                $q->where('name', 'like',"%{$value}%");
-            })
-            ->orWhereHas('bank', function ($q) use($value) {
                 $q->where('name', 'like',"%{$value}%");
             });
     }
@@ -70,14 +75,8 @@ class Receivable extends Model
         ->when(count($this->filterForm->customer) > 0, function ($secondQuery) {
             $secondQuery->whereHas('customer', fn ($q) => $q->whereIn('id',$this->filterForm->customer));
         })
-        ->when(count($this->filterForm->bank) > 0, function ($secondQuery) {
-            $secondQuery->whereHas('bank', fn ($q) => $q->whereIn('id',$this->filterForm->bank));
-        })
-        ->when(!is_null($this->filterForm->invoiceStartDate) && !is_null($this->filterForm->invoiceEndDate), function ($secondQuery) {
-            $secondQuery->whereBetween('invoice_date', [$this->filterForm->invoiceStartDate, $this->filterForm->invoiceEndDate]);
-        })
-        ->when(!is_null($this->filterForm->receiptStartDate) && !is_null($this->filterForm->receiptEndDate), function ($secondQuery) {
-            $secondQuery->whereBetween('receipt_date', [$this->filterForm->receiptStartDate, $this->filterForm->receiptEndDate]);
+        ->when(!is_null($this->filterForm->accountedStartDate) && !is_null($this->filterForm->accountedEndDate), function ($secondQuery) {
+            $secondQuery->whereBetween('accounted_date', [$this->filterForm->accountedStartDate, $this->filterForm->accountedEndDate]);
         });
     }
 }

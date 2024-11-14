@@ -49,7 +49,6 @@ class Payable extends Model
     public function scopeFilter($query, $form)
     {
        $this->filterForm = $form;
-       Log::info('form', [$this->filterForm]);
         
         $query->when(count($this->filterForm->status) > 0, function ($secondQuery) {
             $secondQuery->whereIn('status',$this->filterForm->status);

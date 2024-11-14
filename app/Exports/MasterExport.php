@@ -13,7 +13,7 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 
 class MasterExport implements FromArray, WithTitle, WithHeadings
 {
-    protected $suppliers, $banks, $customers, $currencies;
+    protected $suppliers, $banks, $customers, $currencies, $receivableCategories;
     
     public function __construct()
     {
@@ -71,6 +71,13 @@ class MasterExport implements FromArray, WithTitle, WithHeadings
             // Currency (J to K)
             $row[] = isset($this->currencies[$i]) ? $i : '';
             $row[] = $this->currencies[$i]->name ?? '';
+
+            // Empty column (L)
+            $row[] = '';
+
+            // Currency (M to N)
+            $row[] = isset($this->receivableCategories[$i]) ? $i : '';
+            $row[] = $this->receivableCategories[$i] ?? '';
 
             $data[] = $row;
         }

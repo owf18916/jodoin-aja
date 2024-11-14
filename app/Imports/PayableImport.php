@@ -16,7 +16,7 @@ class PayableImport implements ToCollection, WithStartRow, WithChunkReading, Ski
 
     public function __construct(public $userId)
     {
-        $this->masterValidationService = new \App\Services\MasterValidationServices(masterExceptions: ['customers']);
+        $this->masterValidationService = new \App\Services\MasterValidationServices(masterExceptions: ['customers', 'banks']);
     }
 
     public function sheets(): array

@@ -2,18 +2,12 @@
 
 namespace App\Livewire\Forms;
 
-use App\Models\Bank;
 use App\Services\ReceivableServices;
 use Livewire\Form;
 
 class ReceivableFilterForm extends Form
 {
-    public $bank = [] ,$customer = [], $invoiceStartDate, $invoiceEndDate, $receiptStartDate, $receiptEndDate, $status = [];
-
-    public function setBankFilterOptions(): array
-    {
-        return Bank::select('id','name')->get()->toArray();
-    }
+    public $customer = [], $accountedStartDate, $accountedEndDate, $status = [];
 
     public function setCustomerFilterOptions($query = null)
     {

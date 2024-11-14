@@ -3,14 +3,14 @@
     x-show="open"
     x-transition
     x-cloak
-    x-on:payable-batch-download-clicked.window="open = !open"
+    x-on:receivable-upload-clicked.window="open = !open"
     class="mt-4 inline-block">
     <div
         x-data="{ uploading: false, progress: 0 }"
         x-on:livewire-upload-start="uploading = true"
         x-on:livewire-upload-finish="uploading = false; progress = 0;"
         x-on:livewire-upload-progress="progress = $event.detail.progress">
-        <h4 class="mt-2 mx-4 font-semibold text-slate-600">Download Payable Document Form</h4>
+        <h4 class="mt-2 mx-4 font-semibold text-slate-600">Upload Receivable Form</h4>
         <form wire:submit="save">
             <div class="inline-flex mt-2 mx-4 rounded-md shadow-lg p-4">
                 <input
