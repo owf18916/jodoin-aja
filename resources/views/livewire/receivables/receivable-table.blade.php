@@ -116,7 +116,7 @@
                         </th>
                         <th colspan="2" class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
                             <p
-                                class="flex items-center justify-between gap-2 font-sans text-sm font-normal leading-none text-slate-500">
+                                class="text-center font-sans text-sm font-normal leading-none text-slate-500">
                                 Documents
                             </p>
                         </th>

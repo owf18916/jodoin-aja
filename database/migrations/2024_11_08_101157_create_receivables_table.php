@@ -20,7 +20,7 @@ return new class extends Migration
             $table->date('accounted_date');
             $table->tinyInteger('status_invoice')->default(1)->index('idx_receivables_status_invoice');
             $table->tinyInteger('status_bl')->default(1)->index('idx_receivables_status_bl');
-            $table->tinyInteger('status')->default(1)->index('idx_receivables_status_bl');
+            $table->tinyInteger('status')->default(1)->index('idx_receivables_status');
             $table->foreignId('currency_id');
             $table->decimal('amount', 4);
             $table->foreignId('created_by');

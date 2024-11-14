@@ -34,12 +34,14 @@ class DeployApp extends Command
 
         // Jalankan db:seed
         $this->info('Running database seeder...');
-        // Artisan::call('db:seed');
+        Artisan::call('db:seed');
         $this->info(Artisan::output());
 
         // Buat folder jika belum ada
         $folders = [
-            'storage/app/public/documents',
+            'storage/app/public/documents/payables/copy-payables-here',
+            'storage/app/public/documents/receivables/copy-receivables-here',
+            'storage/app/public/documents/bl/copy-bl-here',
             'storage/app/public/exports',
             'storage/app/chunks/exports',
             'storage/app/public/zip',

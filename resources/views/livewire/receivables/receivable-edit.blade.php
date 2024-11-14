@@ -81,7 +81,7 @@
             </div>
             <div class="col-span-6">
                 <x-label for="form.amount"  value="Amount(*)" />
-                <x-input wire:model.live="form.amount" id="form.amount" type="text" class="mt-1 w-full"/>
+                <x-input wire:model="form.amount" id="form.amount" type="text" class="mt-1 w-full"/>
                 <x-input-error for="form.amount" class="mt-1" />
             </div>
             <div class="col-span-4">
