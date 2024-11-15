@@ -28,10 +28,10 @@ class Receivable extends Model
     }
 
     public static $statusLabels = [
-        1 => 'Single',
-        2 => 'Invoice Berjodoh',
-        3 => 'BL Berjodoh',
-        4 => 'Semua Berjodoh'
+        1 => 'Single 🩶',
+        2 => 'Invoice Berjodoh 💛',
+        3 => 'BL Berjodoh 💛',
+        4 => 'Berjodoh ❤️'
     ];
 
     public static $categoryLabels = [

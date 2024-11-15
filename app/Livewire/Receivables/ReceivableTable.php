@@ -23,9 +23,9 @@ class ReceivableTable extends Component
         $sortDirection = 'desc',
         $search,
         $statusColors = [
-            1 => 'danger',
-            2 => 'warning',
-            3 => 'warning',
+            1 => 'secondary',
+            2 => 'basic',
+            3 => 'basic',
             4 => 'success',
         ];
 

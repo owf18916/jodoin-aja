@@ -2,15 +2,20 @@
 
 namespace App\Exports;
 
-use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithTitle;
+use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class ReceivableDocumentBatchDownloadFormExport implements FromCollection
+class ReceivableDocumentBatchDownloadFormExport implements WithHeadings, WithTitle
 {
-    /**
-    * @return \Illuminate\Support\Collection
-    */
-    public function collection()
+    public function title(): string
     {
-        //
+        return 'upload';
+    }
+
+    public function headings(): array
+    {
+        return [
+            'Invoice Number'
+        ];
     }
 }

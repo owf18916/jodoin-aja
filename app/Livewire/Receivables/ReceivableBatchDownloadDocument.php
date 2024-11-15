@@ -55,7 +55,7 @@ class ReceivableBatchDownloadDocument extends Component
 
     public function importForm()
     {
-        return Excel::download(new \App\Exports\ReceivableDocumentBatchDownloadFormExport, 'document-batch-download-form.xlsx');
+        return Excel::download(new \App\Exports\ReceivableDocumentBatchDownloadFormExport, 'document-receivable-batch-download-form.xlsx');
     }
 
     public function render()

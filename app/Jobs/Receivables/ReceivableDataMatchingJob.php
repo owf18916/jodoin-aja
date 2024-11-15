@@ -43,6 +43,12 @@ class ReceivableDataMatchingJob implements ShouldQueue
                ->where('status_invoice', 1)
                ->where('status_bl', 2)
                ->update(['status' => 3]);
+
+            // Kondisi 4: Jika status_invoice bernilai 1 dan category bernilai 2, set kolom status menjadi 4
+           DB::table('receivables')
+               ->where('status_invoice', 2)
+               ->where('category', 2)
+               ->update(['status' => 4]);
    
             $this->activity->finished_at = now();
            $this->activity->status = 3;

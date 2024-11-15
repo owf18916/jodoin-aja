@@ -27,8 +27,6 @@ class ReceivableDocumentProviderServices {
 
         $this->zipServices = new \App\Services\ZipServices($this->mappedFiles, $this->zipName);
         $this->zipServices->createZip();
-
-        // unlink($excelFilePath);
     }
 
     public function getFileName()
