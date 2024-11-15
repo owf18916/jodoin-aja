@@ -63,7 +63,7 @@ class PayableDocumentBatchDownloadImport implements ToCollection, WithStartRow, 
 
     private function setPayables($rows)
     {
-        $payables = Payable::select('id','invoice_number','payment_date','status')
+        $payables = Payable::select('id','invoice_number','accounted_date','status')
             ->whereIn('invoice_number', array_values($rows->toArray()))
             ->get()
             ->toArray();
@@ -110,8 +110,8 @@ class PayableDocumentBatchDownloadImport implements ToCollection, WithStartRow, 
         $payable = $this->payables[$row];
 
         if ($payable['status'] == 2) {
-            $year = Carbon::parse($payable['payment_date'])->format('Y');
-            $month = Carbon::parse($payable['payment_date'])->format('m');
+            $year = Carbon::parse($payable['accounted_date'])->format('Y');
+            $month = Carbon::parse($payable['accounted_date'])->format('m');
             $cleanedInvoiceNumber = preg_replace('/[^A-Za-z0-9]/', '-', $row);
             $pdfDirectory = storage_path('app/public/documents/payables/');
             $pdfFilePath = $pdfDirectory . $year .'/'. $month .'/'. $cleanedInvoiceNumber . '.pdf';

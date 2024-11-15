@@ -16,7 +16,6 @@ class PayableFilter extends Component
     public function setFilterPayable()
     {
         $this->dispatch('set-status-options', data: $this->form->setStatusFilterOptions());
-        $this->dispatch('set-bank-options', data: $this->form->setBankFilterOptions());
         $this->dispatch($this->modal, open: true);
     }
 
@@ -36,17 +35,10 @@ class PayableFilter extends Component
         $this->dispatch('payable-filtered', form: $this->form);
     }
 
-    public function resetInvoiceDate()
+    public function resetAccountedDate()
     {
-        $this->form->invoiceStartDate = null;
-        $this->form->invoiceEndDate = null;
-        $this->updateFilter();
-    }
-
-    public function resetPaymentDate()
-    {
-        $this->form->paymentStartDate = null;
-        $this->form->paymentEndDate = null;
+        $this->form->accountedStartDate = null;
+        $this->form->accountedEndDate = null;
         $this->updateFilter();
     }
 

@@ -27,8 +27,6 @@ class PayableBatchDownloadDocument extends Component
             return $this->flashError($this->form->errorMessage);
         }
 
-        Log::info('total rows:', [$this->form->getTotalRows()]);
-
         if($this->form->getTotalRows() > 101) {
             $this->flashError('Maksimal data yang bisa dicari adalah 100 invoice number');
             return;

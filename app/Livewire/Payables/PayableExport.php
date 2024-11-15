@@ -21,11 +21,8 @@ class PayableExport extends Component
         $this->form = new stdClass();
         $this->form->status = [];
         $this->form->supplier = [];
-        $this->form->bank = [];
-        $this->form->invoiceStartDate = null;
-        $this->form->invoiceEndDate = null;
-        $this->form->paymentStartDate = null;
-        $this->form->paymentEndDate = null;
+        $this->form->accountedStartDate = null;
+        $this->form->accountedEndDate = null;
     }
 
     #[On('payable-filtered')]
@@ -33,35 +30,23 @@ class PayableExport extends Component
     {
         $this->form->status = $form['status'];
         $this->form->supplier = $form['supplier'];
-        $this->form->bank = $form['bank'];
-        $this->form->invoiceStartDate = $form['invoiceStartDate'];
-        $this->form->invoiceEndDate = $form['invoiceEndDate'];
-        $this->form->paymentStartDate = $form['paymentStartDate'];
-        $this->form->paymentEndDate = $form['paymentEndDate'];
+        $this->form->accountedStartDate = $form['accountedStartDate'];
+        $this->form->accountedEndDate = $form['accountedEndDate'];
     }
 
     public function export()
     {
-        if(empty(($this->form->invoiceStartDate) || empty($this->form->invoiceEndDate)) || empty(($this->form->paymentStartDate) || empty($this->form->paymentEndDate))) {
+        if(empty(($this->form->accountedStartDate) || empty($this->form->accountedEndDate))) {
             $this->flashError('Pilih range tanggal dulu dengan menggunakan filter.');
 
             return;
         }
 
-        $invoiceStartDate = Carbon::parse($this->form->invoiceStartDate);
-        $invoiceEndDate = Carbon::parse($this->form->invoiceEndDate);
+        $accountedStartDate = Carbon::parse($this->form->accountedStartDate);
+        $accountedEndDate = Carbon::parse($this->form->accountedEndDate);
 
-        if($invoiceStartDate->diffInDays($invoiceEndDate) > 365) {
+        if($accountedStartDate->diffInDays($accountedEndDate) > 365) {
             $this->flashError('Range tanggal invoice maksimal 1 tahun (365 hari).');
-
-            return;
-        }
-
-        $paymentStartDate = Carbon::parse($this->form->paymentStartDate);
-        $paymentEndDate = Carbon::parse($this->form->paymentEndDate);
-
-        if($paymentStartDate->diffInDays($paymentEndDate) > 365) {
-            $this->flashError('Range tanggal payment maksimal 1 tahun (365 hari).');
 
             return;
         }

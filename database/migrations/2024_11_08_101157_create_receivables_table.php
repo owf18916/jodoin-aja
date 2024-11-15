@@ -13,14 +13,16 @@ return new class extends Migration
     {
         Schema::create('receivables', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('bank_id')->index('idx_receivables_bank_id');
+            $table->tinyInteger('category');
             $table->foreignId('customer_id')->index('idx_receivables_customer_id');
             $table->string('invoice_number', 121);
-            $table->string('bl_number', 121);
-            $table->date('bl_date');
-            $table->date('invoice_date');
-            $table->date('receipt_date');
+            $table->string('bl_number', 121)->nullable();
+            $table->date('accounted_date');
+            $table->tinyInteger('status_invoice')->default(1)->index('idx_receivables_status_invoice');
+            $table->tinyInteger('status_bl')->default(1)->index('idx_receivables_status_bl');
             $table->tinyInteger('status')->default(1)->index('idx_receivables_status');
+            $table->foreignId('currency_id');
+            $table->decimal('amount', 4);
             $table->foreignId('created_by');
             $table->unique(['customer_id', 'invoice_number'], 'unique_receivables');
             $table->timestamps();

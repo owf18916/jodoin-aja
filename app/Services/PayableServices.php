@@ -35,8 +35,8 @@ class PayableServices {
         return Currency::select('id', 'name', 'description')->get();
     }
 
-    public function getBankOptions(): Collection
-    {
-        return Bank::select('id', 'name', 'initial')->get();
-    }
+    // public function getBankOptions(): Collection
+    // {
+    //     return Bank::select('id', 'name', 'initial')->get();
+    // }
 }

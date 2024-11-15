@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Bank;
 use App\Models\Currency;
 use App\Models\Customer;
+use App\Models\Receivable;
 use Illuminate\Database\Eloquent\Collection;
 
 class ReceivableServices {
@@ -13,10 +14,10 @@ class ReceivableServices {
         return Customer::select('id', 'name')
             ->orWhere('name', 'like', '%' . $query . '%')
             ->get()
-            ->map(function ($supplier) {
+            ->map(function ($customer) {
                 return [
-                    'id' => $supplier->id,
-                    'supplierLabel' => $supplier->name,
+                    'id' => $customer->id,
+                    'customerLabel' => $customer->name,
                 ];
             })
             ->toArray();
@@ -28,6 +29,11 @@ class ReceivableServices {
             ['id' => 1 , 'label' => 'Single'],
             ['id' => 2 , 'label' => 'Berjodoh'],
         ];
+    }
+
+    public function getCategoryOptions(): array
+    {
+        return Receivable::$categoryLabels;
     }
 
     public function getCurrencyOptions(): Collection

@@ -34,6 +34,7 @@
                         <x-icons type="upload" />
                     </button>
                     <livewire:receivables.receivable-match />
+                    <livewire:receivables.receivable-match-data />
                     @endcan
 
                     <button
@@ -59,6 +60,7 @@
                 <thead>
                     <tr>
                         <th
+                            rowspan="2"
                             class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
                             <p
                                 class="flex items-center gap-2 font-sans text-sm font-normal leading-none text-slate-500">
@@ -66,15 +68,15 @@
                             </p>
                         </th>
                         <th
-							x-on:click="$wire.sortField('bank_id')"
+                            rowspan="2"
                             class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
                             <p
-                                class="flex items-center justify-between gap-2 font-sans text-sm font-normal leading-none text-slate-500">
-                                Bank
-                                <x-sort :$sortDirection :$sortBy field="bank_id" />
+                                class="flex items-center gap-2 font-sans text-sm font-normal leading-none text-slate-500">
+                                Kategori
                             </p>
                         </th>
                         <th
+                            rowspan="2"
 							x-on:click="$wire.sortField('customer_id')"
                             class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
                             <p
@@ -84,48 +86,42 @@
                             </p>
                         </th>
                         <th
+                            rowspan="2"
 							x-on:click="$wire.sortField('invoice_number')"
                             class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
                             <p
                                 class="flex items-center justify-between gap-2 font-sans text-sm font-normal leading-none text-slate-500">
-                                Nomor Invoice
+                                Nomor Invoice | BL
                                 <x-sort :$sortDirection :$sortBy field="invoice_number" />
                             </p>
                         </th>
                         <th
-							x-on:click="$wire.sortField('invoice_date')"
+                            rowspan="2"
+							x-on:click="$wire.sortField('accounted_date')"
                             class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
                             <p
                                 class="flex items-center justify-between gap-2 font-sans text-sm font-normal leading-none text-slate-500">
-                                Tanggal Invoice | BL
-                                <x-sort :$sortDirection :$sortBy field="invoice_date" />
+                                Tanggal Catat
+                                <x-sort :$sortDirection :$sortBy field="accounted_date" />
                             </p>
                         </th>
                         <th
-							x-on:click="$wire.sortField('receipt_date')"
-                            class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
-                            <p
-                                class="flex items-center justify-between gap-2 font-sans text-sm font-normal leading-none text-slate-500">
-                                Tanggal Receipt
-                                <x-sort :$sortDirection :$sortBy field="receipt_date" />
-                            </p>
-                        </th>
-                        <th
+                            rowspan="2"
 							x-on:click="$wire.sortField('invoice_date')"
                             class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
                             <p
-                                class="flex items-center justify-between gap-2 font-sans text-sm font-normal leading-none text-slate-500">
+                                class="flex items-center gap-2 font-sans text-sm font-normal leading-none text-slate-500">
                                 Amount
-                                <x-sort :$sortDirection :$sortBy field="invoice_date" />
                             </p>
                         </th>
-                        <th class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
+                        <th colspan="2" class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
                             <p
-                                class="flex items-center justify-between gap-2 font-sans text-sm font-normal leading-none text-slate-500">
+                                class="text-center font-sans text-sm font-normal leading-none text-slate-500">
                                 Documents
                             </p>
                         </th>
                         <th
+                            rowspan="2"
 							x-on:click="$wire.sortField('status')"
                             class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
                             <p
@@ -135,9 +131,26 @@
                             </p>
                         </th>
 						<th
+                            rowspan="2"
 							class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
 							<p
 							class="flex items-center justify-between gap-2 font-sans text-sm  font-normal leading-none text-slate-500">
+							</p>
+						</th>
+                    </tr>
+                    <tr>
+                        <th
+							class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
+							<p
+							class="flex items-center justify-between gap-2 font-sans text-sm  font-normal leading-none text-slate-500">
+                                Invoice
+							</p>
+						</th>
+                        <th
+							class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
+							<p
+							class="flex items-center justify-between gap-2 font-sans text-sm  font-normal leading-none text-slate-500">
+                                BL
 							</p>
 						</th>
                     </tr>
@@ -149,8 +162,8 @@
                             {{ (($receivables->currentPage() - 1) * $receivables->perPage()) + $loop->iteration }}
                         </td>
                         <td class="p-4 border-b border-slate-200">
-							<p class="text-sm text-slate-500">
-								{{ $receivable->bank->initial }}
+                            <p class="text-sm text-slate-500">
+								{{ $receivable->category_label }}
                             </p>
                         </td>
                         <td class="p-4 border-b border-slate-200">
@@ -159,23 +172,18 @@
                             </p>
                         </td>
                         <td class="p-4 border-b border-slate-200">
-							<p class="text-sm text-slate-500">
-								{{ $receivable->invoice_number }}
-                            </p>
-                        </td>
-                        <td class="p-4 border-b border-slate-200">
                             <div class="flex flex-col">
                                 <p class="text-sm font-semibold text-slate-700">
-                                    {{ $receivable->invoice_date }}
+                                    {{ $receivable->invoice_number }}
                                 </p>
                                 <p class="text-sm text-slate-500">
-                                    {{ $receivable->bl_date }}
+                                    {{ $receivable->bl_number }}
                                 </p>
                             </div>
                         </td>
                         <td class="p-4 border-b border-slate-200">
 							<p class="text-sm text-slate-500">
-								{{ $receivable->receipt_date }}
+								{{ $receivable->accounted_date }}
                             </p>
                         </td>
                         <td class="p-4 border-b border-slate-200">
@@ -191,10 +199,33 @@
                             </div>
                         </td>
                         <td class="p-4 border-b border-slate-200">
-                            @if ($receivable->status == 2)
-                                <livewire:receivables.receivable-download-document :id="$receivable->id" />
+                            @if ($receivable->status_invoice == 2)
+                                <x-plain-button
+                                    download
+                                    type="button"
+                                    color="red"
+                                    x-on:click="$dispatch('download-receivable-pdf-clicked', { receivable: {{ $receivable->id }}})">
+                                    <x-icons type="pdf-alt" class="text-center" />
+                                </x-plain-button>
                             @else
                                 N/A
+                            @endif
+                        </td>
+                        <td class="p-4 border-b border-slate-200">
+                            @if ($receivable->category == 2)
+                                -
+                            @else
+                                @if ($receivable->status_bl == 2)
+                                <x-plain-button
+                                    download
+                                    type="button"
+                                    color="red"
+                                    x-on:click="$dispatch('download-receivable-bl-pdf-clicked', { receivable: {{ $receivable->id }}})">
+                                    <x-icons type="pdf-alt" class="text-center" />
+                                </x-plain-button>
+                                @else
+                                    N/A
+                                @endif
                             @endif
                         </td>
                         <td class="p-4 border-b border-slate-200">

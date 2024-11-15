@@ -23,8 +23,10 @@ class ReceivableTable extends Component
         $sortDirection = 'desc',
         $search,
         $statusColors = [
-            1 => 'warning',
-            2 => 'success',
+            1 => 'secondary',
+            2 => 'basic',
+            3 => 'basic',
+            4 => 'success',
         ];
 
     #[On('receivable-refresh')]
@@ -39,18 +41,15 @@ class ReceivableTable extends Component
     {
         $this->form->status = $form['status'];
         $this->form->customer = $form['customer'];
-        $this->form->bank = $form['bank'];
-        $this->form->invoiceStartDate = $form['invoiceStartDate'];
-        $this->form->invoiceStartDate = $form['invoiceStartDate'];
-        $this->form->receiptStartDate = $form['receiptStartDate'];
-        $this->form->receiptStartDate = $form['receiptStartDate'];
+        $this->form->accountedStartDate = $form['accountedStartDate'];
+        $this->form->accountedStartDate = $form['accountedStartDate'];
     }
 
     #[On('receivable-updated')]
     public function render()
     {
         return view('livewire.receivables.receivable-table', [
-            'receivables' => Receivable::with(['customer', 'bank', 'currency'])
+            'receivables' => Receivable::with(['customer', 'currency'])
                 ->search($this->search)
                 ->filter($this->form)
                 ->orderBy($this->sortBy, $this->sortDirection)

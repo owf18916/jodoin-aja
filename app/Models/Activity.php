@@ -43,6 +43,7 @@ class Activity extends Model
         $typeLabels = [
             1 => 'Download',
             2 => 'Upload',
+            3 => 'Proses'
         ];
 
         return array_key_exists($this->type, $typeLabels) ? $typeLabels[$this->type] : 'Tidak Diketahui';

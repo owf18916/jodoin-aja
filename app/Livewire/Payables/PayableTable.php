@@ -39,18 +39,15 @@ class PayableTable extends Component
     {
         $this->form->status = $form['status'];
         $this->form->supplier = $form['supplier'];
-        $this->form->bank = $form['bank'];
-        $this->form->invoiceStartDate = $form['invoiceStartDate'];
-        $this->form->invoiceStartDate = $form['invoiceStartDate'];
-        $this->form->paymentStartDate = $form['paymentStartDate'];
-        $this->form->paymentStartDate = $form['paymentStartDate'];
+        $this->form->accountedStartDate = $form['accountedStartDate'];
+        $this->form->accountedEndDate = $form['accountedEndDate'];
     }
 
     #[On('payable-updated')]
     public function render()
     {
         return view('livewire.payables.payable-table', [
-            'payables' => Payable::with(['supplier', 'bank', 'currency'])
+            'payables' => Payable::with(['supplier', 'currency'])
                 ->search($this->search)
                 ->filter($this->form)
                 ->orderBy($this->sortBy, $this->sortDirection)

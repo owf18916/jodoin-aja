@@ -17,8 +17,6 @@ class PayableDocumentProviderServices {
         $this->zipName = 'payable-document-'.uniqid();
         $excelFileName = $this->zipName.'.xlsx';
         $excelFilePath = storage_path('\\app\\'.$excelFileName);
-
-        Log::info('excel path:', [$excelFilePath]);
         
         Excel::store(new PayableDocumentBatchResultExport($this->payables), $excelFileName, 'local');
 

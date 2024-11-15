@@ -16,7 +16,7 @@ class PayableImport implements ToCollection, WithStartRow, WithChunkReading, Ski
 
     public function __construct(public $userId)
     {
-        $this->masterValidationService = new \App\Services\MasterValidationServices(masterExceptions: ['customers']);
+        $this->masterValidationService = new \App\Services\MasterValidationServices(masterExceptions: ['customers', 'banks']);
     }
 
     public function sheets(): array
@@ -65,23 +65,19 @@ class PayableImport implements ToCollection, WithStartRow, WithChunkReading, Ski
     private function validateRow(int $index, array $rowData): bool
     {
         $validator = Validator::make($rowData, [
-            0 => ['required', $this->masterValidationService->validateBank()], // bank
-            1 => ['required', $this->masterValidationService->validateSupplier()], // supplier
-            2 => ['required'], // invoice number
-            3 => ['required', 'date'], // invoice date
-            4 => ['required', 'date'], // payment date
-            5 => ['required', $this->masterValidationService->validateCurrency()], // currency
-            6 => ['required', 'numeric'], // amount
+            0 => ['required', $this->masterValidationService->validateSupplier()], // supplier
+            1 => ['required'], // invoice number
+            2 => ['required', 'date'], // accounting date
+            3 => ['required', $this->masterValidationService->validateCurrency()], // currency
+            4 => ['required', 'numeric'], // amount
         ]);
 
         $validator->setAttributeNames([
-            0 => 'bank',
-            1 => 'supplier',
-            2 => 'invoice number',
-            3 => 'invoice date',
-            4 => 'payment date',
-            5 => 'currency',
-            6 => 'amount',
+            0 => 'supplier',
+            1 => 'invoice number',
+            2 => 'accounting date',
+            3 => 'currency',
+            4 => 'amount',
         ]);
 
         if ($validator->fails()) {
@@ -100,13 +96,11 @@ class PayableImport implements ToCollection, WithStartRow, WithChunkReading, Ski
     private function mapData($row)
     {
         $this->validRows[] = [
-            'bank_id' => $this->masterValidationService->banks[$row[0]]['id'],
-            'supplier_id' => $this->masterValidationService->suppliers[$row[1]]['id'],
-            'invoice_number' => $row[2],
-            'invoice_date' => $row[3],
-            'payment_date' => $row[4],
-            'currency_id' => $this->masterValidationService->currencies[$row[5]]['id'],
-            'amount' => $row[6],
+            'supplier_id' => $this->masterValidationService->suppliers[$row[0]]['id'],
+            'invoice_number' => $row[1],
+            'accounted_date' => $row[2],
+            'currency_id' => $this->masterValidationService->currencies[$row[3]]['id'],
+            'amount' => $row[4],
             'created_by' => $this->userId,
             'created_at' => now()
         ];
