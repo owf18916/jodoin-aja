@@ -10,5 +10,5 @@
     <livewire:receivables.receivable-create />
     <livewire:receivables.receivable-edit />
     <livewire:receivables.receivable-delete />
-    <livewire:receivables.receivable-download-document />
+    {{-- <livewire:receivables.receivable-download-document /> --}}
 </div>
