@@ -35,8 +35,9 @@ class Receivable extends Model
     ];
 
     public static $categoryLabels = [
-        1 => 'Sales AR',
-        2 => 'Other AR'
+        1 => 'Sales Export',
+        2 => 'Other AR',
+        3 => 'Sales Domestic'
     ];
 
     public function getStatusLabelAttribute()

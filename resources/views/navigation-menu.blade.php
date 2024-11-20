@@ -60,6 +60,9 @@
                                             Process Control
                                         </div>
                     
+                                        <x-dropdown-link x-on:click="$dispatch('upload-document')">
+                                            <div class="cursor-pointer">Upload Document</div>
+                                        </x-dropdown-link>
                                         <x-dropdown-link href="{{ route('activity.index') }}" wire:navigate>
                                             Download/Upload Report
                                         </x-dropdown-link>

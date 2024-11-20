@@ -37,7 +37,7 @@ class ReceivableExport implements FromCollection, WithMapping, WithHeadings, Wit
 
     public function map($row): array
     {
-        if ($row->category == 2) {
+        if (in_array($row->category,[2,3])) {
             $statusBl = '-';
         } else {
             $row->status_bl == 1 ? $statusBl = 'X' : $statusBl = 'O';
