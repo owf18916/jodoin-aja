@@ -74,7 +74,6 @@ class ReceivableForm extends Form
 
     public function store(): void
     {
-        dd($this->getCommonReceivableData());
         Receivable::create(array_merge(
             $this->getCommonReceivableData(),
             ['created_by' => Auth::user()->id]

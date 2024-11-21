@@ -212,7 +212,7 @@
                             @endif
                         </td>
                         <td class="p-4 border-b border-slate-200">
-                            @if ($receivable->category == 2)
+                            @if (in_array($receivable->category, [2, 3]))
                                 -
                             @else
                                 @if ($receivable->status_bl == 2)

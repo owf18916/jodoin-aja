@@ -45,6 +45,8 @@
             </main>
         </div>
 
+        <livewire:document-upload.document-upload-index />
+
         @stack('modals')
 
         @livewireScripts
