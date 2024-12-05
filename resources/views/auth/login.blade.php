@@ -16,8 +16,8 @@
             @csrf
 
             <div>
-                <x-label for="email" class="dark:text-gray-300"  value="{{ __('Email') }}" />
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
+                <x-label for="login" class="dark:text-gray-300"  value="{{ __('Email atau Inisial') }}" />
+                <x-input id="login" class="block mt-1 w-full" name="email" :value="old('email')" required autofocus autocomplete="username" />
             </div>
 
             <div class="mt-4">

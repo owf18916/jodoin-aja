@@ -78,4 +78,10 @@ class User extends Authenticatable
         
         return array_key_exists($this->status, $statusLabels) ? $statusLabels[$this->status] : 'Tidak Diketahui';
     }
+
+    public function findForPassport($identifier)
+    {
+        return $this->where('email', $identifier)->orWhere('initial', $identifier)->first();
+    }
+
 }
