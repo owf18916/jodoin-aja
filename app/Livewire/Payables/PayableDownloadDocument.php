@@ -23,8 +23,8 @@ class PayableDownloadDocument extends Component
     public function download(Payable $payable)
     {
         // $payable = Payable::find($this->id);
-        $year = Carbon::parse($payable->payment_date)->format('Y');
-        $month = Carbon::parse($payable->payment_date)->format('m');
+        $year = Carbon::parse($payable->accounted_date)->format('Y');
+        $month = Carbon::parse($payable->accounted_date)->format('m');
         $cleanedInvoiceNumber = preg_replace('/[^A-Za-z0-9]/', '-', $payable->invoice_number);
         $pdfDirectory = storage_path('app/public/documents/payables/');
         $pdfFilePath = $pdfDirectory . $year .'/'. $month .'/'. $cleanedInvoiceNumber . '.pdf';
