@@ -19,7 +19,7 @@ class PayableMatchingServices {
         $pdfDirectory = storage_path('app/public/documents/payables/');
 
         foreach ($openPayables as $payable) {
-            $cleanedInvoiceNumber = preg_replace('/[^A-Za-z0-9]/', '-', $payable->invoice_number);
+            $cleanedInvoiceNumber = preg_replace('/[^A-Za-z0-9.]/', '-', $payable->invoice_number);
             $originalFile = $pdfDirectory.'copy-payables-here/'.$cleanedInvoiceNumber.'.pdf';
             
             if (File::exists($originalFile)) {

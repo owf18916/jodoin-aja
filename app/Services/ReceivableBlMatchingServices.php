@@ -20,7 +20,7 @@ class ReceivableBlMatchingServices {
         $pdfDirectory = storage_path('app/public/documents/bl/');
 
         foreach ($openBl as $bl) {
-            $cleanedBlNumber = preg_replace('/[^A-Za-z0-9]/', '-', $bl->bl_number);
+            $cleanedBlNumber = preg_replace('/[^A-Za-z0-9.]/', '-', $bl->bl_number);
             $originalFile = $pdfDirectory.'copy-bl-here/'.$cleanedBlNumber.'.pdf';
             
             if (File::exists($originalFile)) {
