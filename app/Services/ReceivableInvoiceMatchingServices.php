@@ -19,7 +19,7 @@ class ReceivableInvoiceMatchingServices {
         $pdfDirectory = storage_path('app/public/documents/receivables/');
 
         foreach ($openReceivables as $receivable) {
-            $cleanedInvoiceNumber = preg_replace('/[^A-Za-z0-9.]/', '-', $receivable->invoice_number);
+            $cleanedInvoiceNumber = preg_replace('/[^A-Za-z0-9. ]/', '-', $receivable->invoice_number);
             $originalFile = $pdfDirectory.'copy-receivables-here/'.$cleanedInvoiceNumber.'.pdf';
             
             if (File::exists($originalFile)) {

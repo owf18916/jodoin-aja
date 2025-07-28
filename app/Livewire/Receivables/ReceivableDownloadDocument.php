@@ -19,7 +19,7 @@ class ReceivableDownloadDocument extends Component
     {
         $year = Carbon::parse($receivable->accounted_date)->format('Y');
         $month = Carbon::parse($receivable->accounted_date)->format('m');
-        $cleanedInvoiceNumber = preg_replace('/[^A-Za-z0-9.]/', '-', $receivable->invoice_number);
+        $cleanedInvoiceNumber = preg_replace('/[^A-Za-z0-9. ]/', '-', $receivable->invoice_number);
         $pdfDirectory = storage_path('app/public/documents/receivables/');
         $pdfFilePath = $pdfDirectory . $year .'/'. $month .'/'. $cleanedInvoiceNumber . '.pdf';
 
@@ -40,7 +40,7 @@ class ReceivableDownloadDocument extends Component
     {
         $year = Carbon::parse($receivable->accounted_date)->format('Y');
         $month = Carbon::parse($receivable->accounted_date)->format('m');
-        $cleanedBlNumber = preg_replace('/[^A-Za-z0-9.]/', '-', $receivable->bl_number);
+        $cleanedBlNumber = preg_replace('/[^A-Za-z0-9. ]/', '-', $receivable->bl_number);
         $pdfDirectory = storage_path('app/public/documents/bl/');
         $pdfFilePath = $pdfDirectory . $year .'/'. $month .'/'. $cleanedBlNumber . '.pdf';
 

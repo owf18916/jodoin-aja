@@ -113,7 +113,7 @@ class ReceivableDocumentBatchDownloadImport implements ToCollection, WithStartRo
         // Buat informasi path dan nama file dasar
         $year = $accountedDate->format('Y');
         $month = $accountedDate->format('m');
-        $cleanedInvoiceNumber = preg_replace('/[^A-Za-z0-9.]/', '-', $receivable['invoice_number']);
+        $cleanedInvoiceNumber = preg_replace('/[^A-Za-z0-9. ]/', '-', $receivable['invoice_number']);
         
         $invoiceFilePath = storage_path("app/public/documents/receivables/{$year}/{$month}/{$cleanedInvoiceNumber}.pdf");
         
@@ -128,7 +128,7 @@ class ReceivableDocumentBatchDownloadImport implements ToCollection, WithStartRo
 
         // Jika kategori 1 dan status 4, tambahkan BL file
         if ($receivable['category'] == 1 && $receivable['status'] == 4) {
-            $cleanedBlNumber = preg_replace('/[^A-Za-z0-9.]/', '-', $receivable['bl_number']);
+            $cleanedBlNumber = preg_replace('/[^A-Za-z0-9. ]/', '-', $receivable['bl_number']);
             $blFilePath = storage_path("app/public/documents/bl/{$year}/{$month}/{$cleanedBlNumber}.pdf");
 
             $this->validRows[] = [
