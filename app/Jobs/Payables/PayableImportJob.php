@@ -48,13 +48,12 @@ class PayableImportJob implements ShouldQueue
             if (!empty($errors)) {
                 $validationErrorServices = new \App\Services\ValidationErrorService($errors);
                 $validationErrorServices->setFields([
-                    0 => 'Bank',
-                    1 => 'Supplier',
-                    2 => 'Invoice Number',
-                    3 => 'Invoice Date',
-                    4 => 'Payment Date',
-                    5 => 'Currency',
-                    6 => 'Amount',
+                    0 => 'Supplier',
+                    1 => 'Invoice Number',
+                    2 => 'Invoice Date',
+                    3 => 'Payment Date',
+                    4 => 'Currency',
+                    5 => 'Amount',
                 ]);
 
                 $validationErrorServices->writeToCsv($this->activity->id);

@@ -44,6 +44,14 @@ return [
             'visibility' => 'public',
             'throw' => false,
         ],
+		
+		
+		'nas' => [
+            'driver' => 'local',
+            'root' => '\\\10.62.191.15\e-doc\\jodoin\\',
+            'url' => env('APP_URL').'/jodoin',
+            'visibility' => 'public',
+        ],
 
         's3' => [
             'driver' => 's3',

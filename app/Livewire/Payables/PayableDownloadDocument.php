@@ -2,11 +2,12 @@
 
 namespace App\Livewire\Payables;
 
-use App\Models\Payable;
-use App\Traits\Swalable;
 use Carbon\Carbon;
-use Livewire\Attributes\On;
+use App\Models\Payable;
 use Livewire\Component;
+use App\Traits\Swalable;
+use Livewire\Attributes\On;
+use Illuminate\Support\Facades\Storage;
 
 class PayableDownloadDocument extends Component
 {
@@ -26,7 +27,9 @@ class PayableDownloadDocument extends Component
         $year = Carbon::parse($payable->accounted_date)->format('Y');
         $month = Carbon::parse($payable->accounted_date)->format('m');
         $cleanedInvoiceNumber = preg_replace('/[\\\\\/:\*\?"<>|]/', '-', $payable->invoice_number);
-        $pdfDirectory = storage_path('app/public/documents/payables/');
+        // $pdfDirectory = storage_path('app/public/documents/payables/');
+        $pdfDirectory = Storage::disk('nas')->path('documents/payables/');
+        
         $pdfFilePath = $pdfDirectory . $year .'/'. $month .'/'. $cleanedInvoiceNumber . '.pdf';
 
         if (!file_exists($pdfFilePath)) {

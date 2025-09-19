@@ -5,6 +5,7 @@ namespace App\Livewire\Receivables;
 use Carbon\Carbon;
 use Livewire\Component;
 use App\Traits\Swalable;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Bus;
 use Livewire\Attributes\On;
 
@@ -34,10 +35,10 @@ class ReceivableMatch extends Component
 
         // Buat batch dengan semua job
         $batch = Bus::batch([
-            new \App\Jobs\Receivables\ReceivableInvoiceMatchingJob($this->matchInvoiceProcess, auth()->user()->id),
-            new \App\Jobs\Receivables\ReceivableBlMatchingJob($this->matchBlProcess, auth()->user()->id)
+            new \App\Jobs\Receivables\ReceivableInvoiceMatchingJob($this->matchInvoiceProcess, Auth::user()->id),
+            new \App\Jobs\Receivables\ReceivableBlMatchingJob($this->matchBlProcess, Auth::user()->id)
         ])
-        ->name('matching-document-receivable-' . auth()->user()->initial . Carbon::now()->format('Y-m-d H:i:s'))
+        ->name('matching-document-receivable-' . Auth::user()->initial . Carbon::now()->format('Y-m-d H:i:s'))
         ->dispatch();
 
         // Simpan id batch ke setiap proses untuk referensi

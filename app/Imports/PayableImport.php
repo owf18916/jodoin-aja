@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Models\Payable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Concerns\ToCollection;
@@ -12,10 +13,16 @@ use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
 class PayableImport implements ToCollection, WithStartRow, WithChunkReading, SkipsEmptyRows, WithMultipleSheets
 {
-    protected $errorRows = [], $validRows = [], $term, $masterValidationService, $currentRow = 1;
+    protected $errorRows = [], $validRows = [], $term, $masterValidationService, $currentRow = 1, $invoices = [];
 
     public function __construct(public $userId)
     {
+        $payables = Payable::select('invoice_number', 'supplier_id')->get()->toArray();
+        
+        foreach($payables as $payable) {
+            $this->invoices[$payable['supplier_id']] = [$payable['invoice_number'] => $payable];
+        }
+
         $this->masterValidationService = new \App\Services\MasterValidationServices(masterExceptions: ['customers', 'banks']);
     }
 
@@ -66,7 +73,7 @@ class PayableImport implements ToCollection, WithStartRow, WithChunkReading, Ski
     {
         $validator = Validator::make($rowData, [
             0 => ['required', $this->masterValidationService->validateSupplier()], // supplier
-            1 => ['required'], // invoice number
+            1 => ['required', $this->checkDuplicate($rowData[0])], // invoice number
             2 => ['required', 'date'], // accounting date
             3 => ['required', $this->masterValidationService->validateCurrency()], // currency
             4 => ['required', 'numeric'], // amount
@@ -104,5 +111,23 @@ class PayableImport implements ToCollection, WithStartRow, WithChunkReading, Ski
             'created_by' => $this->userId,
             'created_at' => now()
         ];
+    }
+
+    private function checkDuplicate($supplier): callable
+    {
+        return function ($attribute, $value, $fail) use($supplier) {
+            
+            if(!isset($this->masterValidationService->suppliers[$supplier]['id'])) {
+                $fail('Periksa penamaan supplier.');
+            } else {
+                $supplierId = $this->masterValidationService->suppliers[$supplier]['id'];
+                if (isset($this->invoices[$supplierId.$value])) {
+                    $fail('Nomor invoice ini sudah ada.');
+                    
+                    return;
+                }
+            }
+            
+        };
     }
 }

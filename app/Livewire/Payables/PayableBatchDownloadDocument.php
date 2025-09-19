@@ -5,6 +5,7 @@ namespace App\Livewire\Payables;
 use Carbon\Carbon;
 use Livewire\Component;
 use App\Traits\Swalable;
+use Illuminate\Support\Facades\Auth;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Log;
@@ -42,9 +43,9 @@ class PayableBatchDownloadDocument extends Component
         $filePath = storage_path('app/imports/' . $uploadedFile);
 
         $batch = Bus::batch([
-            new \App\Jobs\Payables\PayableDocumentBatchDownloadJob($filePath, $this->activity, auth()->user()->id)
+            new \App\Jobs\Payables\PayableDocumentBatchDownloadJob($filePath, $this->activity, Auth::user()->id)
         ])
-        ->name('document-payable-batch-download-'.auth()->user()->initial.Carbon::now()->format('Y-m-d H:i:s'))
+        ->name('document-payable-batch-download-'.Auth::user()->initial.Carbon::now()->format('Y-m-d H:i:s'))
         ->dispatch();
 
         $this->activity->job_batches_id = $batch->id;

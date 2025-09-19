@@ -5,6 +5,7 @@ namespace App\Livewire\Activities;
 use Livewire\Component;
 use App\Models\Activity;
 use App\Traits\WithSorting;
+use Illuminate\Support\Facades\Auth;
 use Livewire\WithPagination;
 
 class ActivityTable extends Component
@@ -36,7 +37,7 @@ class ActivityTable extends Component
     {
         return view('livewire.activities.activity-table', [
             'activities' => Activity::with('user')
-                ->where('user_id', auth()->user()->id)
+                ->when(Auth::user()->id != 1, fn ($q) => $q->where('user_id',Auth::user()->id))
                 ->search($this->search)
                 ->orderBy($this->sortBy, $this->sortDirection)
                 ->simplePaginate($this->paginate)
