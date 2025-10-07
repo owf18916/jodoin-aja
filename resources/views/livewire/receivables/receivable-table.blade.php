@@ -200,13 +200,16 @@
                         </td>
                         <td class="p-4 border-b border-slate-200">
                             @if ($receivable->status_invoice == 2)
-                                <x-plain-button
+                                {{-- <x-plain-button
                                     download
                                     type="button"
                                     color="red"
                                     x-on:click="$dispatch('download-receivable-pdf-clicked', { receivable: {{ $receivable->id }}})">
                                     <x-icons type="pdf-alt" class="text-center" />
-                                </x-plain-button>
+                                </x-plain-button> --}}
+                                <a href="{{ route('receivable-invoice.pdf', $receivable) }}" target="_blank" class="inline-flex">
+                                    <x-icons type="pdf-alt" class="text-center" />
+                                </a>
                             @else
                                 N/A
                             @endif
@@ -216,13 +219,16 @@
                                 -
                             @else
                                 @if ($receivable->status_bl == 2)
-                                <x-plain-button
+                                {{-- <x-plain-button
                                     download
                                     type="button"
                                     color="red"
                                     x-on:click="$dispatch('download-receivable-bl-pdf-clicked', { receivable: {{ $receivable->id }}})">
                                     <x-icons type="pdf-alt" class="text-center" />
-                                </x-plain-button>
+                                </x-plain-button> --}}
+                                <a href="{{ route('receivable-bl.pdf', $receivable) }}" target="_blank" class="inline-flex">
+                                    <x-icons type="pdf-alt" class="text-center" />
+                                </a>
                                 @else
                                     N/A
                                 @endif

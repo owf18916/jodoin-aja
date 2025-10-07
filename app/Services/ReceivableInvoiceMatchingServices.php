@@ -5,6 +5,7 @@ namespace App\Services;
 use Carbon\Carbon;
 use App\Models\Receivable;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class ReceivableInvoiceMatchingServices {
     protected $matchedReceivables = [];
@@ -16,19 +17,25 @@ class ReceivableInvoiceMatchingServices {
             ->where('status_invoice',1)
             ->get();
 
-        $pdfDirectory = storage_path('app/public/documents/receivables/');
+        // Struktur di NAS:
+        //   \\10.62.230.21\data fatp\jodoin\copy-receivables-here\
+        //   \\10.62.230.21\data fatp\jodoin\receivables\YYYY\MM\
+        $inboxBase = 'copy-receivables-here/';
+        $targetRoot = 'receivables/';
 
         foreach ($openReceivables as $receivable) {
-            $cleanedInvoiceNumber = preg_replace('/[\\\\\/:\*\?"<>|]/', '-', $receivable->invoice_number);
-            $originalFile = $pdfDirectory.'copy-receivables-here/'.$cleanedInvoiceNumber.'.pdf';
+            $clean = preg_replace('/[\\\\\/:\*\?"<>|]/', '-', $receivable->invoice_number);
+            $srcRel = $inboxBase . $clean . '.pdf';
             
-            if (File::exists($originalFile)) {
+            if (Storage::disk('nas_fatp')->exists($srcRel)) {
                 $year = Carbon::parse($receivable->accounted_date)->format('Y');
                 $month = Carbon::parse($receivable->accounted_date)->format('m');
                 
-                $destinationFile = $pdfDirectory . $year .'/'. $month .'/'. $cleanedInvoiceNumber . '.pdf';
+                $destDir = $targetRoot . $year . '/' . $month . '/';
+                $destRel = $destDir . $clean . '.pdf';
 
-                File::move($originalFile, $destinationFile);
+                Storage::disk('nas_fatp')->makeDirectory($destDir);
+                Storage::disk('nas_fatp')->move($srcRel, $destRel);
                 
                 $receivable->status_invoice = 2;
 

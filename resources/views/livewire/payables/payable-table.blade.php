@@ -159,13 +159,21 @@
                         </td>
                         <td class="p-4 border-b border-slate-200">
                             @if ($payable->status == 2)
-                                <x-plain-button
-                                    download
+                                {{-- <x-plain-button
                                     type="button"
                                     color="red"
-                                    x-on:click="$dispatch('download-payable-pdf-clicked', { payable: {{ $payable->id }}})">
+                                    x-on:click="$dispatch('view-payable-pdf-clicked', { payable: {{ $payable->id }}})">
                                     <x-icons type="pdf-alt" class="text-center" />
-                                </x-plain-button>
+                                </x-plain-button> --}}
+                                @if ($payable->document_type == 'pdf')
+                                <a href="{{ route('payables.pdf', $payable) }}" target="_blank" class="inline-flex">
+                                    <x-icons type="pdf-alt" class="text-center" />
+                                </a>
+                                @else
+                                <a href="{{ route('payables.zip', $payable) }}" class="inline-flex">
+                                    <x-icons type="zip" class="text-center" />
+                                </a>
+                                @endif
                             @else
                                 <x-badge>N/A</x-badge>
                             @endif

@@ -5,6 +5,9 @@ namespace App\Imports;
 use Carbon\Carbon;
 use App\Models\Payable;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\Filesystem\Path;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithStartRow;
@@ -63,7 +66,7 @@ class PayableDocumentBatchDownloadImport implements ToCollection, WithStartRow, 
 
     private function setPayables($rows)
     {
-        $payables = Payable::select('id','invoice_number','accounted_date','status')
+        $payables = Payable::select('id','invoice_number','accounted_date','status','document_type')
             ->whereIn('invoice_number', array_values($rows->toArray()))
             ->get()
             ->toArray();
@@ -107,19 +110,29 @@ class PayableDocumentBatchDownloadImport implements ToCollection, WithStartRow, 
 
     private function mapData($row)
     {
-        $payable = $this->payables[$row];
+        $p = $this->payables[$row];
 
-        if ($payable['status'] == 2) {
-            $year = Carbon::parse($payable['accounted_date'])->format('Y');
-            $month = Carbon::parse($payable['accounted_date'])->format('m');
-            $cleanedInvoiceNumber = preg_replace('/[\\\\\/:\*\?"<>|]/', '-', $row);
-            $pdfDirectory = storage_path('app/public/documents/payables/');
-            $pdfFilePath = $pdfDirectory . $year .'/'. $month .'/'. $cleanedInvoiceNumber . '.pdf';
-    
+        if ((int)$p['status'] === 2) {
+            $year  = \Carbon\Carbon::parse($p['accounted_date'])->format('Y');
+            $month = \Carbon\Carbon::parse($p['accounted_date'])->format('m');
+
+            $clean = preg_replace('/[\\\\\/:\*\?"<>|]/', '-', $row);
+            $ext   = strtolower($p['document_type'] ?? 'pdf');
+
+            // RELATIVE path (tidak pakai root/UNC/C:\)
+            $relative = "payables/{$year}/{$month}/{$clean}.{$ext}";
+
+            // ABSOLUTE UNC dari DISK NAS
+            $abs = Storage::disk('nas_fatp')->path($relative);
+
+            Log::info('map-data', ['disk'=>'nas_fatp','relative'=>$relative,'abs'=>$abs]);
+
             $this->validRows[] = [
-                'path' => $pdfFilePath,
-                'name' => $cleanedInvoiceNumber.'.pdf',
-                'mime' => 'application/pdf',
+                'disk'     => 'nas_fatp',
+                'relative' => $relative,
+                'path'     => $abs,                 // UNC: \\10.62.230.21\data fatp\jodoin\...
+                'name'     => $clean.'.pdf',
+                'mime'     => 'application/pdf',
             ];
         }
     }

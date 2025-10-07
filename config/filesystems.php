@@ -45,11 +45,17 @@ return [
             'throw' => false,
         ],
 		
-		
-		'nas' => [
+		'nas_fatp' => [
             'driver' => 'local',
-            'root' => '\\\10.62.191.15\e-doc\\jodoin\\',
+            'root' => rtrim(env('NAS_FATP_ROOT', ''), "\\/"),
             'url' => env('APP_URL').'/jodoin',
+            'visibility' => 'public',
+        ],
+
+        'nas_ils' => [
+            'driver' => 'local',
+            'root' => rtrim(env('NAS_ILS_ROOT', ''), "\\/"),
+            'url' => env('APP_URL').'/ils',
             'visibility' => 'public',
         ],
 
@@ -64,7 +70,6 @@ return [
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'throw' => false,
         ],
-
     ],
 
     /*

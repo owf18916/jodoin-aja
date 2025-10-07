@@ -22,7 +22,7 @@ class PayableMatchingJob implements ShouldQueue
      */
     public function __construct(public $activity, public $userId) {
         $this->matchingPayableServices = new PayableMatchingServices;
-        $this->matchingPayableServices->matchPayables();
+        // $this->matchingPayableServices->matchPayables();
     }
 
     /**
@@ -30,6 +30,8 @@ class PayableMatchingJob implements ShouldQueue
      */
     public function handle(): void
     {
+        $this->matchingPayableServices->matchPayables();
+
         if ($unmatchedPayables = $this->matchingPayableServices->getUnmatchedPayables()) {
             $this->handleUnmatchedPayables($unmatchedPayables);
         } else {

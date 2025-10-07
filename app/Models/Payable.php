@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Log;
 
 class Payable extends Model
 {
-    protected $fillable = ['supplier_id', 'invoice_number', 'accounted_date', 'currency_id','amount', 'status', 'created_by'];
+    protected $fillable = ['supplier_id', 'invoice_number', 'accounted_date', 'currency_id','amount', 'status', 'document_type','created_by'];
 
     public function currency(): BelongsTo
     {
